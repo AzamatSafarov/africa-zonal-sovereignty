@@ -1,0 +1,1528 @@
+{
+ "meta": {
+  "title": "Zonal Sovereignty Atlas — Africa Crypto Regimes, 2013–2026",
+  "built": "2026-10-23",
+  "verification": "Демонстрационный корпус. Собран из открытых источников, НЕ верифицирован построчно по первоисточникам. См. поле confidence у каждой записи.",
+  "confidence_levels": {
+   "sourced": "Есть конкретный источник (закон/регулятор/агентство), указан в source",
+   "reported": "Сообщено в медиа или отраслевом обзоре, первоисточник не сверен",
+   "needs_check": "Требует проверки — противоречие между источниками или неясная дата"
+  },
+  "regimes": {
+   "prohibitive": {
+    "label": "Запрет",
+    "color": "#b3202c",
+    "desc": "Прямой запрет или уголовная ответственность"
+   },
+   "restrictive": {
+    "label": "Ограничительный",
+    "color": "#d97706",
+    "desc": "Банкам запрещено, владение не запрещено; двойной режим"
+   },
+   "drafting": {
+    "label": "Проект/переход",
+    "color": "#eab308",
+    "desc": "Закон в разработке или принят без работающего лицензирования"
+   },
+   "sandbox": {
+    "label": "Песочница",
+    "color": "#84cc16",
+    "desc": "Регуляторная песочница / инкубация"
+   },
+   "licensing": {
+    "label": "Лицензирование",
+    "color": "#16a34a",
+    "desc": "Работающая система лицензий"
+   },
+   "open": {
+    "label": "Открытый",
+    "color": "#0d9488",
+    "desc": "Лицензирование работает, рынок развит"
+   }
+  },
+  "event_types": {
+   "product": "Первый работающий рыночный продукт",
+   "institution": "Хаб, ассоциация, акселератор, сообщество",
+   "law": "Регуляторный акт",
+   "partnership": "Межгосударственное или корпоративное соглашение",
+   "funding": "Инвестиционный или отчётный сигнал"
+  }
+ },
+ "countries": [
+  {
+   "code": "NG",
+   "name": "Nigeria",
+   "ru": "Нигерия",
+   "coords": [
+    8.6753,
+    9.082
+   ],
+   "hub_city": "Lagos",
+   "hub_coords": [
+    3.3792,
+    6.5244
+   ],
+   "timeline": [
+    {
+     "year": 2014,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2016,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2017,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2018,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2019,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "5 фев: циркуляр CBN — банкам запрещено обслуживать крипто-биржи"
+    },
+    {
+     "year": 2022,
+     "regime": "prohibitive",
+     "confidence": "sourced"
+    },
+    {
+     "year": 2023,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Дек: CBN снимает запрет на банковские операции; ISA 2023 относит цифровые активы к ценным бумагам"
+    },
+    {
+     "year": 2024,
+     "regime": "sandbox",
+     "confidence": "sourced",
+     "note": "Авг: SEC запускает ARIP — первая когорта площадок в песочнице"
+    },
+    {
+     "year": 2025,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "ISA 2025: все биржи обязаны иметь лицензию SEC. Quidax, Busha — первые лицензии"
+    },
+    {
+     "year": 2026,
+     "regime": "licensing",
+     "confidence": "reported"
+    }
+   ],
+   "metrics": {
+    "adoption_rank_2025": 2,
+    "onchain_value_2025_usd_bn": 92.1,
+    "vc_share_deals_pct": 33
+   },
+   "role": "источник, отдающий вовне"
+  },
+  {
+   "code": "KE",
+   "name": "Kenya",
+   "ru": "Кения",
+   "coords": [
+    37.9062,
+    -0.0236
+   ],
+   "hub_city": "Nairobi",
+   "hub_coords": [
+    36.8219,
+    -1.2921
+   ],
+   "timeline": [
+    {
+     "year": 2013,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "9 июля: Kipochi — первый крипто-продукт в Африке (биткоин-кошелёк + M-Pesa)"
+    },
+    {
+     "year": 2014,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2015,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "CBK предупреждение о виртуальных валютах"
+    },
+    {
+     "year": 2016,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2017,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2018,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "CBK запрещает банкам обслуживать крипто (циркуляр)"
+    },
+    {
+     "year": 2019,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "drafting",
+     "confidence": "reported",
+     "note": "Проект политики по цифровым активам; CMA получает мандат"
+    },
+    {
+     "year": 2023,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Май: партнёрство с Venom Foundation (ADGM, Абу-Даби) — строительство блокчейн-хаба в Найроби"
+    },
+    {
+     "year": 2024,
+     "regime": "drafting",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "4 апр внесён VASP Bill; 13 окт принят парламентом; 15 окт assent; вступил 4 ноя 2025"
+    },
+    {
+     "year": 2026,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "17 мар: проект регламентов; 24 июл: регламенты опубликованы (CBK — платежи/стейблкоины, CMA — биржи). Лицензии ещё не выданы"
+    }
+   ],
+   "metrics": {
+    "adoption_rank_2025": 10,
+    "vc_share_deals_pct": 13
+   },
+   "role": "посредник"
+  },
+  {
+   "code": "ZA",
+   "name": "South Africa",
+   "ru": "ЮАР",
+   "coords": [
+    22.9375,
+    -30.5595
+   ],
+   "hub_city": "Cape Town",
+   "hub_coords": [
+    18.4241,
+    -33.9249
+   ],
+   "timeline": [
+    {
+     "year": 2013,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "BitX основан в Стелленбоше (позже Luno)"
+    },
+    {
+     "year": 2014,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "SARB публичное предупреждение, но без запрета"
+    },
+    {
+     "year": 2015,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "BitX привлекает $4 млн от Naspers; штаб-квартира → Сингапур"
+    },
+    {
+     "year": 2016,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2017,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2018,
+     "regime": "sandbox",
+     "confidence": "reported",
+     "note": "SARB запускает межбанковский проект Project Khokha"
+    },
+    {
+     "year": 2019,
+     "regime": "sandbox",
+     "confidence": "sourced",
+     "note": "IFWG Crypto Asset Regulatory Working Group — первый официальный регуляторный трек"
+    },
+    {
+     "year": 2020,
+     "regime": "sandbox",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "sandbox",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "19 окт: FSCA объявляет крипто-активы финансовым продуктом по FAIS"
+    },
+    {
+     "year": 2023,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "1 июн: FSCA открывает лицензирование CASP. Первая работающая система лицензий в Африке"
+    },
+    {
+     "year": 2024,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "На 10 дек: 248 заявок, 248 рассмотрено, лицензии выдаются. Крупнейший формальный крипто-рынок Африки"
+    },
+    {
+     "year": 2025,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "~300 из 512 заявок одобрено; 81 расследование по нелицензированной деятельности"
+    },
+    {
+     "year": 2026,
+     "regime": "open",
+     "confidence": "reported",
+     "note": "Открытие национальной платёжной системы для небанковских участников"
+    }
+   ],
+   "metrics": {
+    "vc_share_funding_pct": 18
+   },
+   "role": "метрополия (региональная)"
+  },
+  {
+   "code": "GH",
+   "name": "Ghana",
+   "ru": "Гана",
+   "coords": [
+    -1.0232,
+    7.9465
+   ],
+   "hub_city": "Accra",
+   "hub_coords": [
+    -0.187,
+    5.6037
+   ],
+   "timeline": [
+    {
+     "year": 2013,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2014,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2015,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2016,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2017,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2018,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "BoG предупреждение против крипто"
+    },
+    {
+     "year": 2019,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "BoG анонсирует планы по eCedi (CBDC)"
+    },
+    {
+     "year": 2022,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2023,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Проект VASP Bill внесён; публичные консультации"
+    },
+    {
+     "year": 2024,
+     "regime": "drafting",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Принят Virtual Asset Service Providers Act, 2025 (Act 1154). BoG создаёт полноценный департамент, но лицензии ещё не выдаются"
+    },
+    {
+     "year": 2026,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Авг: BoG заявляет о полной операционализации к 2027. На дек 2026 — окна лицензирования всё ещё нет"
+    }
+   ],
+   "metrics": {},
+   "role": "ожидающий (закон есть, рынка нет)"
+  },
+  {
+   "code": "RW",
+   "name": "Rwanda",
+   "ru": "Руанда",
+   "coords": [
+    29.8739,
+    -1.9403
+   ],
+   "hub_city": "Kigali",
+   "hub_coords": [
+    30.0619,
+    -1.9441
+   ],
+   "timeline": [
+    {
+     "year": 2018,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "NBR предупреждает против крипто"
+    },
+    {
+     "year": 2019,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "drafting",
+     "confidence": "reported",
+     "note": "NBR исследует CBDC; Национальный банк изучает цифровой франк"
+    },
+    {
+     "year": 2022,
+     "regime": "sandbox",
+     "confidence": "sourced",
+     "note": "RDB/BNR запускают регуляторную песочницу для финтеха"
+    },
+    {
+     "year": 2023,
+     "regime": "sandbox",
+     "confidence": "sourced",
+     "note": "Virtual Assets Policy 2023 — первая официальная политика"
+    },
+    {
+     "year": 2024,
+     "regime": "sandbox",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "drafting",
+     "confidence": "reported",
+     "note": "Законопроект о виртуальных активах в разработке"
+    },
+    {
+     "year": 2026,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "5 мая: парламент принимает закон о виртуальных активах 69-0; Закон № 023/2026 от 25 мая, опубликован в Gazette 28 мая, вступил в силу. CMA — регулятор, NBR — со-координатор"
+    }
+   ],
+   "metrics": {},
+   "role": "посредник (стратегия государства)"
+  },
+  {
+   "code": "ET",
+   "name": "Ethiopia",
+   "ru": "Эфиопия",
+   "coords": [
+    40.4897,
+    9.145
+   ],
+   "hub_city": "Addis Ababa",
+   "hub_coords": [
+    38.7469,
+    9.025
+   ],
+   "timeline": [
+    {
+     "year": 2022,
+     "regime": "drafting",
+     "confidence": "reported",
+     "note": "Майнинг биткоина начинает допускаться на государственные энергомощности"
+    },
+    {
+     "year": 2023,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Proclamation No. 1282/2023 — поправка к платёжным системам"
+    },
+    {
+     "year": 2024,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Proclamation No. 1359/2024 — криптоплатежи прямо запрещены; NBE получает мандат. НО майнинг лицензируется"
+    },
+    {
+     "year": 2025,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "Тендеры на майнинг-мощности для иностранных операторов (в т.ч. из Китая)"
+    },
+    {
+     "year": 2026,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Фев: публичное уведомление NBE против P2P-операций с привязкой к быру. Двойной режим зафиксирован окончательно"
+    }
+   ],
+   "metrics": {},
+   "role": "двойной режим (запрет платежей + лицензированный майнинг)"
+  },
+  {
+   "code": "MU",
+   "name": "Mauritius",
+   "ru": "Маврикий",
+   "coords": [
+    57.5522,
+    -20.3484
+   ],
+   "hub_city": "Port Louis",
+   "hub_coords": [
+    57.5012,
+    -20.1654
+   ],
+   "timeline": [
+    {
+     "year": 2016,
+     "regime": "sandbox",
+     "confidence": "sourced",
+     "note": "Regulatory Sandbox Licence (RSL) разработан — один из первых в Африке"
+    },
+    {
+     "year": 2018,
+     "regime": "sandbox",
+     "confidence": "sourced",
+     "note": "RSL включён в бюджет 2018/19; SelfKey — первая лицензия (янв 2018). Страна позиционируется как блокчейн-хаб"
+    },
+    {
+     "year": 2019,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "Financial Services (Custodian Services — Digital Asset) Rules 2019: FSC начинает лицензировать VASP с 2019"
+    },
+    {
+     "year": 2021,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "Virtual Asset and Initial Token Offering Services Act (VAITOS)"
+    },
+    {
+     "year": 2022,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "7 фев: VAITOS вступает в силу. Маврикий — первый в Африке режим с законом о токенизации"
+    },
+    {
+     "year": 2023,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2026,
+     "regime": "open",
+     "confidence": "reported"
+    }
+   ],
+   "metrics": {},
+   "role": "оболочка (юрисдикция для регистрации)"
+  },
+  {
+   "code": "SC",
+   "name": "Seychelles",
+   "ru": "Сейшелы",
+   "coords": [
+    55.492,
+    -4.6796
+   ],
+   "hub_city": "Victoria",
+   "hub_coords": [
+    55.4518,
+    -4.6191
+   ],
+   "timeline": [
+    {
+     "year": 2014,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "BitMEX (HDR Global Trading Ltd) зарегистрирован на Сейшелах по International Business Companies Act"
+    },
+    {
+     "year": 2015,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2016,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "BitMEX изобретает perpetual swap — инструмент становится глобальным стандартом"
+    },
+    {
+     "year": 2017,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2018,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2019,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "open",
+     "confidence": "reported",
+     "note": "Обвинения против основателей BitMEX по Bank Secrecy Act (США)"
+    },
+    {
+     "year": 2022,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2023,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "BitMEX признаёт вину по Bank Secrecy Act"
+    },
+    {
+     "year": 2025,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2026,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "BitMEX закрывает рынки 23 сентября 2026 после 11 лет"
+    }
+   ],
+   "metrics": {},
+   "role": "оболочка (суверенитет на бумаге)"
+  },
+  {
+   "code": "BW",
+   "name": "Botswana",
+   "ru": "Ботсвана",
+   "coords": [
+    24.6849,
+    -22.3285
+   ],
+   "hub_city": "Gaborone",
+   "hub_coords": [
+    25.908,
+    -24.6282
+   ],
+   "timeline": [
+    {
+     "year": 2014,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Satoshi Centre основан (Alakanani Itireleng) — один из первых образовательных крипто-центров Африки"
+    },
+    {
+     "year": 2019,
+     "regime": "drafting",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "drafting",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "drafting",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "Virtual Assets Act 2022 + Virtual Assets Regulations 2022. NBFIRA — регулятор. Один из первых в Африке"
+    },
+    {
+     "year": 2023,
+     "regime": "licensing",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "licensing",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "open",
+     "confidence": "reported"
+    },
+    {
+     "year": 2026,
+     "regime": "open",
+     "confidence": "sourced",
+     "note": "Крипто легально под NBFIRA VASP-лицензией; не законное платёжное средство"
+    }
+   ],
+   "metrics": {},
+   "role": "ранний лицензиар"
+  },
+  {
+   "code": "TZ",
+   "name": "Tanzania",
+   "ru": "Танзания",
+   "coords": [
+    34.8888,
+    -6.369
+   ],
+   "hub_city": "Dar es Salaam",
+   "hub_coords": [
+    39.2083,
+    -6.7924
+   ],
+   "timeline": [
+    {
+     "year": 2019,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "12 ноя: Bank of Tanzania публичное уведомление против виртуальных валют"
+    },
+    {
+     "year": 2020,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "Ноя: CBR предупреждает против крипто"
+    },
+    {
+     "year": 2022,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2023,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Finance Act 2024: вводится withholding tax на цифровые активы с 1 июля 2024 — крипта признана налоговым объектом"
+    },
+    {
+     "year": 2025,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "AML Act Cap. 423 распространён на VASP"
+    },
+    {
+     "year": 2026,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Управляющий BoT Эммануэль Тутуба объявляет о разработке формального регулирования крипто и стейблкоинов"
+    }
+   ],
+   "metrics": {},
+   "role": "разворачивающийся (разворот 2019→2026)"
+  },
+  {
+   "code": "MA",
+   "name": "Morocco",
+   "ru": "Марокко",
+   "coords": [
+    -7.0926,
+    31.7917
+   ],
+   "hub_city": "Casablanca",
+   "hub_coords": [
+    -7.5898,
+    33.5731
+   ],
+   "timeline": [
+    {
+     "year": 2017,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "Ноя: Office des Changes + Bank Al-Maghrib + Минэкономики — запрет крипто-транзакций, де-факто запрет"
+    },
+    {
+     "year": 2018,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2019,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "prohibitive",
+     "confidence": "reported",
+     "note": "При этом Марокко входит в топ-20 по adoption — теневой рынок растёт"
+    },
+    {
+     "year": 2023,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "BAM готовит проект закона о крипто-активах"
+    },
+    {
+     "year": 2025,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Bill 42.25 внесён в парламент — исторический разворот; Марокко 24-е в мире по adoption (2025)"
+    },
+    {
+     "year": 2026,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Июль: BAM подтверждает прогресс по закону. Формально запрет 2017 ещё в силе — противоречие зафиксировано"
+    }
+   ],
+   "metrics": {
+    "adoption_rank_2025": 24
+   },
+   "role": "разворачивающийся (запрет при высоком adoption)"
+  },
+  {
+   "code": "EG",
+   "name": "Egypt",
+   "ru": "Египет",
+   "coords": [
+    30.8025,
+    26.8206
+   ],
+   "hub_city": "Cairo",
+   "hub_coords": [
+    31.2357,
+    30.0444
+   ],
+   "timeline": [
+    {
+     "year": 2020,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "Закон о ЦБ № 194/2020, ст. 206 — прямой запрет выпуска, торговли, продвижения крипто; уголовная ответственность без одобрения CBE"
+    },
+    {
+     "year": 2021,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2023,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "Март: девальвация фунта (−40%), интерес к крипто растёт вопреки запрету"
+    },
+    {
+     "year": 2025,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "Египет 26-й в мире по adoption — при действующем уголовном запрете"
+    },
+    {
+     "year": 2026,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    }
+   ],
+   "metrics": {
+    "adoption_rank_2025": 26
+   },
+   "role": "запрет при высоком adoption"
+  },
+  {
+   "code": "ZW",
+   "name": "Zimbabwe",
+   "ru": "Зимбабве",
+   "coords": [
+    29.1549,
+    -19.0154
+   ],
+   "hub_city": "Harare",
+   "hub_coords": [
+    31.0522,
+    -17.8252
+   ],
+   "timeline": [
+    {
+     "year": 2018,
+     "regime": "prohibitive",
+     "confidence": "reported",
+     "note": "RBZ запрещает банкам обслуживать крипто-биржи"
+    },
+    {
+     "year": 2019,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2023,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Апр: введён ZiG — золотообеспеченная национальная валюта (SI 60 of 2024)"
+    },
+    {
+     "year": 2025,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Finance Act No. 7 of 2025 вводит лицензирование крипто-бизнеса"
+    },
+    {
+     "year": 2026,
+     "regime": "licensing",
+     "confidence": "sourced",
+     "note": "SI 99 of 2026 (10 июня): все компании с виртуальными активами обязаны регистрироваться и платить годовые сборы. Первый выделенный режим"
+    }
+   ],
+   "metrics": {},
+   "role": "разворачивающийся (запрет → лицензирование)"
+  },
+  {
+   "code": "ZM",
+   "name": "Zambia",
+   "ru": "Замбия",
+   "coords": [
+    27.8493,
+    -13.1339
+   ],
+   "hub_city": "Lusaka",
+   "hub_coords": [
+    28.3228,
+    -15.3875
+   ],
+   "timeline": [
+    {
+     "year": 2024,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "BoZ Strategy 2024-2027 — первый формальный трек по цифровым активам"
+    },
+    {
+     "year": 2025,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2026,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "VASP обязаны регистрироваться в Bank of Zambia; выделенного закона ещё нет"
+    }
+   ],
+   "metrics": {},
+   "role": "догоняющий"
+  },
+  {
+   "code": "UG",
+   "name": "Uganda",
+   "ru": "Уганда",
+   "coords": [
+    32.2903,
+    1.3733
+   ],
+   "hub_city": "Kampala",
+   "hub_coords": [
+    32.5825,
+    0.3476
+   ],
+   "timeline": [
+    {
+     "year": 2022,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "Банк Уганды предупреждает против крипто"
+    },
+    {
+     "year": 2023,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "Kampala Blockchain Summit — отраслевой подъём"
+    },
+    {
+     "year": 2025,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Bank of Uganda представляет шестикомпонентный регуляторный блупринт для виртуальных активов на Kampala Blockchain Summit"
+    },
+    {
+     "year": 2026,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Пакет законов о виртуальных активах готовится. Лицензированным платёжным провайдерам запрещено обслуживать крипто"
+    }
+   ],
+   "metrics": {},
+   "role": "догоняющий"
+  },
+  {
+   "code": "SN",
+   "name": "Senegal",
+   "ru": "Сенегал",
+   "coords": [
+    -14.4524,
+    14.4974
+   ],
+   "hub_city": "Dakar",
+   "hub_coords": [
+    -17.4677,
+    14.7167
+   ],
+   "timeline": [
+    {
+     "year": 2016,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "BCEAO предупреждение по крипто в зоне UEMOA"
+    },
+    {
+     "year": 2018,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Закон № 2018-03 (AML/CFT) — покрытие крипто через AML"
+    },
+    {
+     "year": 2019,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "BCEAO заявляет, что крипто не является законным платёжным средством в UEMOA"
+    },
+    {
+     "year": 2023,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "drafting",
+     "confidence": "reported",
+     "note": "BCEAO разрабатывает региональную рамку для крипто и стейблкоинов"
+    },
+    {
+     "year": 2025,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Выделенного законодательства нет; страна в рамках BCEAO"
+    },
+    {
+     "year": 2026,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Инструкция BCEAO № 008-05-2015 покрывает e-money; региональная рамка в разработке для всех 8 стран UEMOA"
+    }
+   ],
+   "metrics": {},
+   "role": "регионально-зависимый (UEMOA/BCEAO)"
+  },
+  {
+   "code": "CM",
+   "name": "Cameroon",
+   "ru": "Камерун",
+   "coords": [
+    12.3547,
+    7.3697
+   ],
+   "hub_city": "Douala",
+   "hub_coords": [
+    9.7679,
+    4.0511
+   ],
+   "timeline": [
+    {
+     "year": 2019,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "BEAC предупреждение по виртуальным активам в зоне CEMAC"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "prohibitive",
+     "confidence": "sourced",
+     "note": "Май: BEAC выпускает коммуникé CEMAC, запрещающее все операции с виртуальными активами"
+    },
+    {
+     "year": 2023,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "prohibitive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "prohibitive",
+     "confidence": "reported",
+     "note": "При этом P2P через мобильные деньги активен; лицензированных бирж нет"
+    },
+    {
+     "year": 2026,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "Де-факто запрет для бизнеса (только XAF законное средство), но владение для физлиц не криминализовано"
+    }
+   ],
+   "metrics": {},
+   "role": "регионально-зависимый (CEMAC/BEAC), де-факто запрет"
+  },
+  {
+   "code": "MZ",
+   "name": "Mozambique",
+   "ru": "Мозамбик",
+   "coords": [
+    35.5296,
+    -18.6657
+   ],
+   "hub_city": "Maputo",
+   "hub_coords": [
+    32.5732,
+    -25.9692
+   ],
+   "timeline": [
+    {
+     "year": 2022,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "Banco de Moçambique предупреждение"
+    },
+    {
+     "year": 2023,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "drafting",
+     "confidence": "reported"
+    },
+    {
+     "year": 2026,
+     "regime": "drafting",
+     "confidence": "sourced",
+     "note": "Крипто легально к владению; провайдеры обязаны регистрироваться. Выделенного закона нет"
+    }
+   ],
+   "metrics": {},
+   "role": "догоняющий"
+  },
+  {
+   "code": "TN",
+   "name": "Tunisia",
+   "ru": "Тунис",
+   "coords": [
+    9.5375,
+    33.8869
+   ],
+   "hub_city": "Tunis",
+   "hub_coords": [
+    10.1815,
+    36.8065
+   ],
+   "timeline": [
+    {
+     "year": 2018,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2019,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2020,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2021,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2022,
+     "regime": "restrictive",
+     "confidence": "reported",
+     "note": "BCT анонсирует изучение e-dinar"
+    },
+    {
+     "year": 2023,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2024,
+     "regime": "restrictive",
+     "confidence": "reported"
+    },
+    {
+     "year": 2025,
+     "regime": "restrictive",
+     "confidence": "sourced",
+     "note": "52-е место в Global Crypto Adoption Index 2025"
+    },
+    {
+     "year": 2026,
+     "regime": "restrictive",
+     "confidence": "reported"
+    }
+   ],
+   "metrics": {
+    "adoption_rank_2025": 52
+   },
+   "role": "осторожный наблюдатель"
+  }
+ ],
+ "external_hubs": [
+  {
+   "id": "EXT-DUBAI",
+   "name": "Dubai — DMCC Crypto Centre",
+   "ru": "Дубай",
+   "coords": [
+    55.139,
+    25.0755
+   ],
+   "opened": 2021,
+   "role": "Капитал, лицензирование, релокация африканских основателей. 600+ крипто-компаний к 2024; 123 новых в 2023",
+   "role_type": "метрополия"
+  },
+  {
+   "id": "EXT-SINGAPORE",
+   "name": "Singapore — MAS",
+   "ru": "Сингапур",
+   "coords": [
+    103.8198,
+    1.3521
+   ],
+   "opened": 2013,
+   "role": "Образец лицензионной модели. Принял штаб-квартиру BitX/Luno (2015, $4M от Naspers)",
+   "role_type": "метрополия"
+  },
+  {
+   "id": "EXT-HONGKONG",
+   "name": "Hong Kong",
+   "ru": "Гонконг",
+   "coords": [
+    114.1694,
+    22.3193
+   ],
+   "opened": 2025,
+   "role": "Приёмник объёма после ужесточения Сингапура (2025)",
+   "role_type": "метрополия"
+  },
+  {
+   "id": "EXT-ZURICH",
+   "name": "Zug / Crypto Valley (CV VC)",
+   "ru": "Цюрих/Цуг",
+   "coords": [
+    8.5155,
+    47.1662
+   ],
+   "opened": 2017,
+   "role": "Производитель главного отчёта о «блокчейн-Африке» (CV VC + Absa, 5 выпусков)",
+   "role_type": "производитель дискурса"
+  },
+  {
+   "id": "EXT-ADGM",
+   "name": "Abu Dhabi — ADGM",
+   "ru": "Абу-Даби",
+   "coords": [
+    54.3213,
+    24.5
+   ],
+   "opened": 2015,
+   "role": "Лицензировал Venom Foundation, через который Кения строила блокчейн-хаб (MoU, 10 мая 2023)",
+   "role_type": "метрополия"
+  },
+  {
+   "id": "EXT-BVI",
+   "name": "BVI / offshore",
+   "ru": "БВО",
+   "coords": [
+    -64.6231,
+    18.4207
+   ],
+   "opened": 1984,
+   "role": "Классическая офшорная оболочка для крипто-структур",
+   "role_type": "оболочка"
+  }
+ ],
+ "network_edges": [
+  {
+   "from": "EXT-ADGM",
+   "to": "KE",
+   "year": 2023,
+   "type": "partnership",
+   "label": "Venom Foundation (лицензия ADGM) ↔ правительство Кении: MoU о блокчейн-хабе в Найроби",
+   "confidence": "sourced",
+   "source": "wearetech.africa / coinspeaker"
+  },
+  {
+   "from": "ZA",
+   "to": "EXT-SINGAPORE",
+   "year": 2015,
+   "type": "relocation",
+   "label": "BitX/Luno переносит штаб-квартиру в Сингапур после $4M от Naspers",
+   "confidence": "sourced",
+   "source": "ventureburn / mybroadband"
+  },
+  {
+   "from": "NG",
+   "to": "EXT-DUBAI",
+   "year": 2022,
+   "type": "relocation",
+   "label": "Нигерийские основатели переоформляют компании в Дубай после бана CBN 2021",
+   "confidence": "reported",
+   "source": "отраслевые обзоры"
+  },
+  {
+   "from": "AU",
+   "to": "KE",
+   "year": 2015,
+   "type": "acquisition",
+   "label": "Австралийская биржа Igot приобретает кенийскую Tagpesa и входит на рынок",
+   "confidence": "sourced",
+   "source": "techcabal"
+  },
+  {
+   "from": "EXT-DUBAI",
+   "to": "GH",
+   "year": 2023,
+   "type": "partnership",
+   "label": "Bybit × DMCC — экосистемное партнёрство, распространение на африканских разработчиков",
+   "confidence": "sourced",
+   "source": "African Leadership Magazine"
+  },
+  {
+   "from": "EXT-ZURICH",
+   "to": "ZA",
+   "year": 2025,
+   "type": "funding",
+   "label": "CV VC + Absa: главный отчёт о блокчейн-Африке — швейцарский VC производит знание о континенте",
+   "confidence": "sourced",
+   "source": "CV VC / Absa Africa Blockchain Report"
+  },
+  {
+   "from": "EXT-DUBAI",
+   "to": "NG",
+   "year": 2025,
+   "type": "funding",
+   "label": "Нигерия — 33% сделок в блокчейн-сфере Африки, при этом внешний капитал идёт через Залив",
+   "confidence": "reported",
+   "source": "techeconomy.ng / CV VC"
+  },
+  {
+   "from": "SC",
+   "to": "GLOBAL",
+   "year": 2014,
+   "type": "registration",
+   "label": "BitMEX регистрируется на Сейшелах, операции — глобальные; Сейшелы не получают операционного следа",
+   "confidence": "sourced",
+   "source": "Wikipedia / cryptoeconomics"
+  },
+  {
+   "from": "MU",
+   "to": "AFRICA",
+   "year": 2018,
+   "type": "registration",
+   "label": "Маврикий продаёт RSL-лицензии африканским и глобальным стартапам как шлюз на континент",
+   "confidence": "sourced",
+   "source": "afrivest.org / FSC Mauritius"
+  },
+  {
+   "from": "CN",
+   "to": "ET",
+   "year": 2025,
+   "type": "mining",
+   "label": "Китайские операторы получают майнинг-мощности в Эфиопии (при запрете криптоплатежей)",
+   "confidence": "reported",
+   "source": "отраслевые обзоры"
+  }
+ ]
+}
