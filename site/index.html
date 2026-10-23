@@ -289,6 +289,59 @@ body{font-size:15.5px;line-height:1.5}
 footer{border-top:2px solid var(--ink);padding:32px 0 72px}
 footer .fg{font-size:11px;letter-spacing:.08em}
 
+
+/* ---- карта: зум и перетаскивание ---- */
+.mapwrap{position:relative;overflow:hidden;background:#fbfbf9}
+#map{cursor:grab;touch-action:none}
+#map.panning{cursor:grabbing}
+#map text,#map .country,#map path.extnode,#map circle.extseat{cursor:pointer}
+.mapctrl{position:absolute;right:16px;top:16px;display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);background:#fff;z-index:5}
+.mapctrl button{width:38px;height:38px;padding:0;font-size:16px;border:0;border-bottom:1px solid var(--rule);background:#fff;color:var(--ink);cursor:pointer;line-height:1}
+.mapctrl button:last-child{border-bottom:0}
+.mapctrl button:hover{background:var(--ink);color:#fff}
+.maphint{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-4);background:rgba(255,255,255,.85);padding:4px 9px;border:1px solid var(--rule);pointer-events:none}
+
+
+/* ============ ОБРАМЛЕНИЕ: секции как панели ============ */
+.panel{background:#fff;border:1px solid var(--rule);margin-bottom:0}
+.panel + .panel{margin-top:20px}
+.panel-h{display:grid;grid-template-columns:repeat(12,1fr);padding:30px 32px 24px;border-bottom:1px solid var(--rule);align-items:baseline;background:#fcfcfb}
+.panel-h .n{grid-column:1/2;font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em}
+.panel-h h2{grid-column:2/9;font-size:clamp(21px,2.5vw,32px);letter-spacing:-.026em;padding-right:24px}
+.panel-h .d{grid-column:9/13;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+@media(max-width:900px){.panel-h{grid-template-columns:1fr;gap:12px;padding:24px 20px}
+ .panel-h .n,.panel-h h2,.panel-h .d{grid-column:1/-1}.panel-h h2{padding-right:0}}
+
+/* блоки внутри панели — с внутренними границами */
+.frame PADPLACE{}
+.frame{display:grid;grid-template-columns:1fr 1fr;border-top:0}
+.frame>div{padding:28px 32px 32px;border-right:1px solid var(--rule)}
+.frame>div:last-child{border-right:0}
+@media(max-width:860px){.frame{grid-template-columns:1fr}.frame>div{border-right:0;border-bottom:1px solid var(--rule);padding:24px 20px}.frame>div:last-child{border-bottom:0}}
+
+.pull{padding:36px 32px;border-top:1px solid var(--rule);background:#fcfcfb}
+
+/* роли: каждая карточка — плитка с рамкой */
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:0;border-top:0}
+.role{padding:24px 26px 26px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:#fff}
+.role:last-child{border-right:0}
+
+/* данные: три колонки внутри панели */
+.data{display:grid;grid-template-columns:repeat(3,1fr);border-top:0}
+.data>div{padding:26px 30px 30px;border-right:1px solid var(--rule)}
+.data>div:last-child{border-right:0}
+@media(max-width:900px){.data{grid-template-columns:1fr}.data>div{border-right:0;border-bottom:1px solid var(--rule);padding:24px 20px}.data>div:last-child{border-bottom:0}}
+
+/* методы: строки внутри панели */
+.methods{border-top:0}
+.mrow .mb{padding:30px 34px 32px 0}
+.mrow .mn{padding-left:34px}
+.mrow .mq{padding:32px 34px 32px 32px}
+
+/* волна: панель */
+.chartcard{background:#fff;border:1px solid var(--rule);padding:20px 24px}
+
 </style>
 </head>
 <body>
@@ -326,7 +379,7 @@ footer .fg{font-size:11px;letter-spacing:.08em}
 <div class="wrap">
 
   <section>
-    <div class="sec-h">
+    <div class="panel-h">
       <div class="n">01</div>
       <h2>Атлас: режимы по годам и структура связей</h2>
       <div class="d">Ползунок перекрашивает карту по режиму выбранного года. Клик по стране открывает траекторию и связи. Переключатель «Граф» управляет отображением рёбер.</div>
@@ -367,7 +420,15 @@ footer .fg{font-size:11px;letter-spacing:.08em}
           <div class="lgitem"><span class="kl" style="border-top-color:#a51c0a;border-top-style:dashed"></span>Регистрация</div>
         </div>
 
-        <svg id="map" viewBox="164 26 887 707" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="mapwrap">
+          <svg id="map" viewBox="164 26 887 707" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="mapctrl">
+            <button id="zin" title="Приблизить">+</button>
+            <button id="zout" title="Отдалить">−</button>
+            <button id="zreset" title="Сбросить вид" style="font-size:11px">⟲</button>
+          </div>
+          <div class="maphint">колесо — зум · перетаскивание — сдвиг</div>
+        </div>
       </div>
 
       <div class="right">
@@ -387,21 +448,22 @@ footer .fg{font-size:11px;letter-spacing:.08em}
   </section>
 
   <section>
-    <div class="sec-h">
+    <div class="panel-h">
       <div class="n">02</div>
       <h2>Волна: число государств в каждом режиме по годам</h2>
       <div class="d">Последовательность, на которой держится событийный анализ. Столбик — год, сегменты — сколько государств находилось в каждом режиме.</div>
     </div>
-    <div class="chart"><svg id="wave" viewBox="0 0 1200 400"></svg></div>
+    <div class="panel"><div class="chart" style="padding:24px 28px"><svg id="wave" viewBox="0 0 1200 400"></svg></div></div>
   </section>
 
   <section>
-    <div class="sec-h">
+    <div class="panel-h">
       <div class="n">03</div>
       <h2>Методы: вложенная конструкция</h2>
       <div class="d">Четыре уровня на один вопрос. Внешний задаёт паттерн, внутренние объясняют механизм. Каждый уровень опирается на предыдущий и проверяет его.</div>
     </div>
 
+    <div class="panel">
     <div class="methods">
       <div class="mrow">
         <div class="mn">01</div>
@@ -475,15 +537,17 @@ footer .fg{font-size:11px;letter-spacing:.08em}
         </div>
       </div>
     </div>
+    </div>
   </section>
 
   <section>
-    <div class="sec-h">
+    <div class="panel-h">
       <div class="n">04</div>
       <h2>Рамка: суверенитет перераспределяется, а не теряется</h2>
       <div class="d">Aihwa Ong, graduated sovereignty. Государство применяет разные правовые режимы к разным частям своей территории, чтобы встроиться в глобальные потоки.</div>
     </div>
 
+        <div class="panel">
     <div class="frame">
       <div>
         <h3>Что видно на данных</h3>
@@ -510,29 +574,32 @@ footer .fg{font-size:11px;letter-spacing:.08em}
       <div class="qh">Развилка исследования</div>
       <p>Является ли крипто-зона инструментом суверенной стратегии — или симптомом отсутствия стратегии? Ong описывала сильные государства Юго-Восточной Азии. В африканских кейсах государство часто слабое. Руанда — вероятно, стратегия. Сейшелы — вероятно, симптом. Разные случаи дают разные ответы, и это делает вывод проверяемым.</p>
     </div>
+    </div>
   </section>
 
   <section>
-    <div class="sec-h">
+    <div class="panel-h">
       <div class="n">05</div>
       <h2>Роли государств в сети</h2>
       <div class="d">Роль определяется направлением рёбер, а не размером рынка. Клик по названию открывает траекторию и связи государства.</div>
     </div>
+    <div class="panel">
     <div class="roles" id="roleGrid"></div>
-    <div class="sec-h" style="padding:36px 0 18px">
-      <div class="n">05б</div>
-      <h2 style="font-size:20px">Внешние узлы графа</h2>
-      <div class="d">Центры, к которым подключены африканские хабы.</div>
+    <div style="padding:26px 32px 18px;border-bottom:1px solid var(--rule);background:#fcfcfb">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)">05б · Внешние узлы графа</div>
+      <div style="font-size:13.5px;color:var(--ink-2);margin-top:7px">Центры, к которым подключены африканские хабы.</div>
     </div>
     <div class="roles" id="extGrid"></div>
+    </div>
   </section>
 
   <section>
-    <div class="sec-h">
+    <div class="panel-h">
       <div class="n">06</div>
       <h2>Данные и статус верификации</h2>
       <div class="d">Реестр собран из открытых источников. Каждая запись помечена уровнем достоверности. Это демонстрационный корпус — не пригоден для публикации без построчной проверки.</div>
     </div>
+    <div class="panel">
     <div class="data">
       <div>
         <h3>Уровни достоверности</h3>
@@ -560,6 +627,7 @@ footer .fg{font-size:11px;letter-spacing:.08em}
           <li><b>Медиа:</b> Reuters, IOL, Business Daily Africa, TechCabal, Capital FM, Technext</li>
         </ul>
       </div>
+    </div>
     </div>
   </section>
 </div>
@@ -889,6 +957,85 @@ document.getElementById('s-nodes').textContent=DATA.external_hubs.length;
 document.getElementById('s-edges').textContent=DATA.network_edges.length;
 document.getElementById('s-sourced').textContent=conf.sourced||0;
 renderRoles(); renderWave(); renderNetPane();
+
+/* ================= ЗУМ И ПАН КАРТЫ ================= */
+(function(){
+  const svgEl = document.getElementById('map');
+  const BASE = {x:164, y:26, w:887, h:707};
+  const MINK = 1, MAXK = 12;
+  let vb = {...BASE};
+  let dragging = false, last = null, moved = false;
+
+  function apply(){ svgEl.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`); }
+  function zoomAt(factor, cx, cy){
+    // cx,cy — точка в координатах viewBox, вокруг которой масштабируем
+    const nw = Math.min(BASE.w, Math.max(BASE.w/MAXK, vb.w/factor));
+    const nh = nw * (BASE.h/BASE.w);
+    const k = nw / vb.w;
+    vb.x = cx - (cx - vb.x)*k;
+    vb.y = cy - (cy - vb.y)*k;
+    vb.w = nw; vb.h = nh;
+    clamp(); apply();
+  }
+  function clamp(){
+    // не даём уехать за пределы базового кадра больше чем на полкадра
+    const padX = BASE.w*0.5, padY = BASE.h*0.5;
+    vb.x = Math.max(BASE.x - padX, Math.min(BASE.x + BASE.w - vb.w + padX, vb.x));
+    vb.y = Math.max(BASE.y - padY, Math.min(BASE.y + BASE.h - vb.h + padY, vb.y));
+  }
+  // координаты события в системе viewBox
+  function toVb(evt){
+    // preserveAspectRatio "xMidYMid meet": единый масштаб k = max(w_ratio, h_ratio)
+    const r = svgEl.getBoundingClientRect();
+    const k = Math.max(vb.w / r.width, vb.h / r.height);
+    const offX = (r.width  - vb.w / k) / 2;
+    const offY = (r.height - vb.h / k) / 2;
+    return {
+      x: vb.x + (evt.clientX - r.left - offX) * k,
+      y: vb.y + (evt.clientY - r.top  - offY) * k
+    };
+  }
+
+  svgEl.addEventListener('wheel', e=>{
+    e.preventDefault();
+    const p = toVb(e);
+    zoomAt(e.deltaY < 0 ? 1.25 : 0.8, p.x, p.y);
+  }, {passive:false});
+
+  svgEl.addEventListener('pointerdown', e=>{
+    if(e.target.closest('.mapctrl')) return;
+    if(e.button !== 0) return;
+    dragging = true; moved = false; last = {x:e.clientX, y:e.clientY};
+    svgEl.classList.add('panning');
+    e.preventDefault();
+  });
+  window.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const dx = e.clientX - last.x, dy = e.clientY - last.y;
+    if(Math.abs(dx)+Math.abs(dy) > 2) moved = true;
+    const r = svgEl.getBoundingClientRect();
+    const k = Math.max(vb.w / r.width, vb.h / r.height);
+    vb.x -= dx * k; vb.y -= dy * k;
+    last = {x:e.clientX, y:e.clientY};
+    clamp(); apply();
+  });
+  window.addEventListener('pointerup', ()=>{
+    if(!dragging) return;
+    dragging = false; svgEl.classList.remove('panning');
+    // гасим следующий клик, если это было перетаскивание
+    if(moved){ setTimeout(()=>{ moved=false; }, 0); }
+  });
+  // клик по стране не должен срабатывать после перетаскивания
+  svgEl.addEventListener('click', e=>{ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false; } }, true);
+
+  // двойной клик — приблизить
+  svgEl.addEventListener('dblclick', e=>{ const p=toVb(e); zoomAt(1.8, p.x, p.y); });
+
+  document.getElementById('zin').onclick  = ()=>{ zoomAt(1.4, vb.x+vb.w/2, vb.y+vb.h/2); };
+  document.getElementById('zout').onclick = ()=>{ zoomAt(0.7, vb.x+vb.w/2, vb.y+vb.h/2); };
+  document.getElementById('zreset').onclick = ()=>{ vb={...BASE}; apply(); };
+})();
+
 </script>
 </body>
 </html>
