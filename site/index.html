@@ -531,11 +531,18 @@ fetch('countries-110m.json').then(r=>r.json()).then(topo=>{
     .attr('class','country').attr('data-code',f=>numToCode[String(Number(f.id))])
     .attr('d',path).on('click',(e,f)=>selectCountry(numToCode[String(Number(f.id))]));
 
-  ['MU','SC'].forEach(code=>{
-    const c=byCode[code]; if(!c) return;
-    const p=pt(c.hub_coords);
-    gCountries.append('circle').attr('class','country').attr('data-code',code)
-      .attr('cx',p[0]).attr('cy',p[1]).attr('r',5).attr('stroke','#b9b9b1').attr('stroke-width',.6)
+  // Маврикий и Сейшелы отсутствуют в геометрии 110m — рисуем компактные островные контуры
+  const ISLANDS={
+    MU:{c:[57.55,-20.3], r:11, dx:1.6},
+    SC:{c:[55.5,-4.6], r:13, dx:1.5}
+  };
+  Object.entries(ISLANDS).forEach(([code,cfg])=>{
+    if(!byCode[code]) return;
+    const [cx0,cy0]=pt(cfg.c);
+    // эллипс-контур острова (визуально отличается от круглого маркера)
+    gCountries.append('ellipse').attr('class','country').attr('data-code',code)
+      .attr('cx',cx0).attr('cy',cy0).attr('rx',cfg.r*cfg.dx).attr('ry',cfg.r)
+      .attr('stroke','#b9b9b1').attr('stroke-width',.7)
       .style('cursor','pointer').on('click',()=>selectCountry(code));
   });
 
@@ -573,7 +580,25 @@ function drawNetwork(){
 }
 
 /* смещения подписей для плотных кластеров */
-const LBL={GH:[7,13],NG:[-8,-7],RW:[9,-4],UG:[-9,-4],KE:[9,10],BW:[-9,11],ZA:[9,13],TZ:[9,3],ET:[9,-2]};
+const LBL={
+    GH:[-8,-9],   // Аккра — западнее, подпись влево-вверх
+    NG:[8,12],    // Лагос — восточнее, подпись вправо-вниз (ЛАГОС ПРАВЕЕ АККРЫ)
+    RW:[10,2],    // Кигали
+    UG:[-10,-6],  // Кампала
+    KE:[10,12],   // Найроби
+    BW:[-10,-8],  // Габороне
+    ZA:[10,14],   // Кейптаун
+    TZ:[10,-4],   // Дар-эс-Салам
+    ET:[10,-3],   // Аддис-Абеба
+    CM:[-9,9],    // Дуала
+    SN:[10,-4],   // Дакар — у левого края, подпись вправо
+    EG:[10,4],    // Каир
+    MA:[10,-4],   // Касабланка
+    TN:[10,-6],   // Тунис
+    ZW:[9,3],     // Хараре
+    ZM:[-10,3],   // Лусака
+    MZ:[10,3]     // Мапуту
+  };
 
 function paint(year){
   document.getElementById('ybig').textContent=year;
@@ -617,9 +642,9 @@ function paint(year){
     .attr('d','M0,-5 L5,0 L0,5 L-5,0 Z').attr('fill','#1a4fd6');
   gLabels.selectAll('text.extlabel').data(DATA.external_hubs,d=>d.id).join('text')
     .attr('class','extlabel')
-    .attr('x',d=>{const p=pt(d.coords); return p[0]>1050? p[0]-9 : p[0]+9;})
+    .attr('x',d=>{const p=pt(d.coords); return p[0]>1000? p[0]-10 : p[0]+10;})
     .attr('y',d=>pt(d.coords)[1]+3.5)
-    .attr('text-anchor',d=>pt(d.coords)[0]>1050?'end':'start')
+    .attr('text-anchor',d=>pt(d.coords)[0]>1000?'end':'start')
     .attr('dy',d=>d.id==='EXT-ADGM'?13:0)
     .text(d=>d.ru);
 
