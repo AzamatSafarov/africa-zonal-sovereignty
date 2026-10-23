@@ -50,7 +50,6 @@ header{border-bottom:2px solid var(--ink)}
 .hdr{display:grid;grid-template-columns:repeat(12,1fr)}
 .hdr .title{grid-column:1/9;padding:30px 0 24px}
 .hdr .title h1{font-size:clamp(30px,4.4vw,56px);letter-spacing:-.04em;line-height:.98}
-.hdr .title h1 br:first-of-type{display:none}
 .hdr .title .sub{margin-top:16px;max-width:64ch;font-size:15px;color:var(--ink-2);line-height:1.5}
 .hdr .aside{grid-column:9/13;border-left:1px solid var(--rule);padding:30px 0 24px 26px}
 .hdr .aside dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:12.5px}
@@ -66,13 +65,13 @@ header{border-bottom:2px solid var(--ink)}
 .strip{border-bottom:1px solid var(--rule);display:grid;grid-template-columns:repeat(5,1fr)}
 .strip .cell{padding:16px 16px 14px 0;border-right:1px solid var(--rule)}
 .strip .cell:last-child{border-right:0}
-.strip .cell .v{font-family:var(--mono);font-size:27px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.strip .cell .v{font-family:var(--mono);font-size:27px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1;min-height:30px}
 .strip .cell .l{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:7px}
 @media(max-width:760px){.strip{grid-template-columns:repeat(2,1fr)}.strip .cell{border-bottom:1px solid var(--rule);padding-left:0}}
 
 /* sections */
 section{border-bottom:1px solid var(--rule)}
-.sec-h{display:grid;grid-template-columns:repeat(12,1fr);padding:36px 0 20px;align-items:end}
+.sec-h{display:grid;grid-template-columns:repeat(12,1fr);padding:40px 0 22px;align-items:baseline}
 .sec-h .n{grid-column:1/2;font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;padding-bottom:7px}
 .sec-h h2{grid-column:2/9;font-size:clamp(23px,3vw,40px);padding-right:24px}
 .sec-h .d{grid-column:9/13;font-size:13.5px;color:var(--ink-2);line-height:1.5;padding-bottom:5px}
@@ -101,13 +100,13 @@ button:last-child{border-right:0}
 button:hover{background:var(--ink);color:var(--paper)}
 button.on{background:var(--accent);color:#fff}
 
-.legend{border-bottom:1px solid var(--rule);padding:11px 20px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr))}
-.lglabel{grid-column:1/-1;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:2px 0 7px}
+.legend{border-bottom:1px solid var(--rule);padding:12px 20px 13px;display:grid;grid-template-columns:repeat(6,1fr);align-items:center}
+.lglabel{grid-column:1/-1;align-self:end;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:2px 0 7px}
 .lgitem{display:flex;align-items:center;gap:9px;font-size:12px;padding:5px 12px 5px 0;border-right:1px solid var(--rule)}
 .lgitem .k{width:16px;height:10px;flex:0 0 auto;border:1px solid rgba(0,0,0,.2)}
 .lgitem .kl{width:22px;height:0;border-top:2.5px solid;flex:0 0 auto}
 
-#map{width:100%;display:block;background:var(--paper)}
+#map{width:100%;display:block;background:var(--paper);aspect-ratio:887/707}
 .land{fill:#e7e7e1;stroke:#d0d0c9;stroke-width:.5}
 .country{stroke:#b9b9b1;stroke-width:.6;cursor:pointer;transition:fill .4s}
 .country:hover{stroke:var(--ink);stroke-width:1.5}
@@ -193,7 +192,7 @@ button.on{background:var(--accent);color:#fff}
 
 /* roles */
 .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:1px solid var(--rule)}
-.role{padding:22px 22px 24px 0;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.role{padding:22px 22px 24px 0;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);display:flex;flex-direction:column}
 .role h4{font-size:15px;letter-spacing:-.01em;line-height:1.25}
 .role .cnt{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
 .role .countries{margin-top:13px;display:flex;flex-wrap:wrap;gap:5px}
@@ -202,7 +201,7 @@ button.on{background:var(--accent);color:#fff}
 
 /* data */
 .data{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule)}
-.data>div{padding:26px 26px 30px 0;border-right:1px solid var(--rule)}
+.data>div{padding:26px 26px 30px 0;border-right:1px solid var(--rule);display:flex;flex-direction:column}
 .data>div:last-child{border-right:0;padding-left:26px}
 @media(max-width:900px){.data{grid-template-columns:1fr}.data>div{border-right:0;padding:24px 0}.data>div:last-child{padding-left:0;border-top:1px solid var(--rule)}}
 .data h3{font-size:15px;margin-bottom:13px}
@@ -289,7 +288,7 @@ footer .fg{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;fo
           <div class="lgitem"><span class="kl" style="border-top-color:#a51c0a;border-top-style:dashed"></span>Регистрация</div>
         </div>
 
-        <svg id="map" viewBox="120 40 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
+        <svg id="map" viewBox="164 26 887 707" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
 
       <div class="right">
@@ -314,7 +313,7 @@ footer .fg{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;fo
       <h2>Волна: число государств в каждом режиме по годам</h2>
       <div class="d">Последовательность, на которой держится событийный анализ. Столбик — год, сегменты — сколько государств находилось в каждом режиме.</div>
     </div>
-    <div class="chart"><svg id="wave" viewBox="0 0 1200 380"></svg></div>
+    <div class="chart"><svg id="wave" viewBox="0 0 1200 400"></svg></div>
   </section>
 
   <section>
@@ -512,7 +511,7 @@ function regimeClass(c,year){
    — Африка занимала основную площадь,
    — Цюрих (47N) и Сингапур (104E) оставались в кадре,
    — Индийский океан не «съедал» правую треть. */
-const proj = d3.geoMercator().center([32,6]).scale(330).translate([520,370]);
+const proj = d3.geoMercator().center([28,4]).scale(360).translate([480,370]);
 const path = d3.geoPath(proj);
 const pt = c => proj(c);
 
@@ -720,7 +719,9 @@ function renderWave(){
   YEARS.forEach(y=>counts[y]={prohibitive:0,restrictive:0,drafting:0,sandbox:0,licensing:0,open:0});
   DATA.countries.forEach(c=>YEARS.forEach(y=>{ const r=regimeClass(c,y); if(r.key!=='none') counts[y][r.key]++; }));
   const keys=['prohibitive','restrictive','drafting','sandbox','licensing','open'];
-  const w=1200,h=380,pad={l:54,r:215,t:28,b:54},maxV=14;
+  const rawMax=Math.max(...YEARS.map(y=>Object.values(counts[y]).reduce((a,b)=>a+b,0)));
+  const maxV=Math.ceil((rawMax+1)/5)*5;
+  const w=1200,h=400,pad={l:54,r:215,t:34,b:56};
   const bw=(w-pad.l-pad.r)/YEARS.length;
   let bars='',xlab='';
   YEARS.forEach((y,i)=>{
@@ -728,12 +729,14 @@ function renderWave(){
     keys.forEach(k=>{
       const v=counts[y][k]; if(!v) return;
       const bh=(h-pad.t-pad.b)*(v/maxV);
-      bars+=`<rect x="${pad.l+i*bw+1.5}" y="${h-pad.b-acc-bh}" width="${bw-3}" height="${bh}" fill="${REGIMES[k].color}"><title>${y}: ${REGIMES[k].label} — ${v}</title></rect>`;
+      bars+=`<rect x="${pad.l+i*bw+1.5}" y="${(h-pad.b-acc-bh).toFixed(1)}" width="${bw-3}" height="${bh.toFixed(1)}" fill="${REGIMES[k].color}"><title>${y}: ${REGIMES[k].label} — ${v}</title></rect>`;
       acc+=bh;
     });
     xlab+=`<text x="${pad.l+i*bw+bw/2}" y="${h-24}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#6e6e6e">${y}</text>`;
   });
-  const grid=[0,4,8,12].map(v=>{
+  const ticks=[];{const step=maxV<=10?2:(maxV<=20?5:10);for(let v=0;v<=maxV;v+=step)ticks.push(v);
+    if(ticks[ticks.length-1]!==maxV)ticks.push(maxV);}
+  const grid=ticks.map(v=>{
     const yy=h-pad.b-(h-pad.t-pad.b)*(v/maxV);
     return `<line x1="${pad.l}" x2="${w-pad.r}" y1="${yy}" y2="${yy}" stroke="#d4d4cf"/>
             <text x="${pad.l-10}" y="${yy+4}" text-anchor="end" font-family="ui-monospace,monospace" font-size="10.5" fill="#6e6e6e">${v}</text>`;
