@@ -8,393 +8,474 @@
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 <style>
+/* ============================================================
+   SWISS DESIGN / International Typographic Style
+   Сетка как каркас · типографика как главный носитель смысла ·
+   один сигнальный акцент · максимум воздуха · выключка влево ·
+   никакой декоративности, теней и скруглений.
+   ============================================================ */
 :root{
-  --bg:#0a0e13; --panel:#141b24; --panel2:#1a2430; --panel3:#101720;
-  --line:#26333f; --line2:#33424f;
-  --fg:#eaf1f8; --muted:#93a6b8; --dim:#6b8095;
-  --accent:#3ddc97; --gold:#f0b429; --blue:#6ea8fe; --purple:#c4a0f5;
-  --r:14px;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --paper:#f4f4f1;
+  --ink:#0e0e0e;
+  --ink-2:#3a3a3a;
+  --ink-3:#6e6e6e;
+  --ink-4:#9a9a9a;
+  --rule:#d4d4cf;
+  --rule-2:#bcbcb5;
+  --accent:#e8340c;
+  --blue:#1a4fd6;
+  --grotesk:"Helvetica Neue",Helvetica,Inter,Arial,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular","Roboto Mono",Menlo,Consolas,monospace;
+  --r-prohibitive:#a51c0a;
+  --r-restrictive:#c25e00;
+  --r-drafting:#b89500;
+  --r-sandbox:#5f8a00;
+  --r-licensing:#1f7a3d;
+  --r-open:#0a6f6a;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5}
-body{-webkit-font-smoothing:antialiased}
-a{color:var(--accent);text-decoration:none}
-.wrap{max-width:1560px;margin:0 auto;padding:0 22px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--grotesk);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{border-bottom-color:var(--accent);color:var(--accent)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 32px}
+@media(max-width:640px){.wrap{padding:0 18px}}
 
-header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0d131a,#0a0e13)}
-.hdr{padding:22px 0 18px}
-.hdr .row{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
-h1{margin:0 0 8px;font-size:clamp(19px,2.3vw,27px);font-weight:640;letter-spacing:-.02em}
-.sub{color:var(--muted);font-size:14.5px;max-width:78ch;margin:0}
-.badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
-.badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;padding:4px 10px;border:1px solid var(--line2);border-radius:999px;color:var(--muted);background:var(--panel3)}
-.badge.hot{border-color:rgba(61,220,151,.35);color:var(--accent)}
-.meta{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right;line-height:2}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.025em;line-height:1.03}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-.sec{padding:30px 0}
-.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:5px}
-.sec-num{font-family:var(--mono);font-size:11px;color:var(--accent);border:1px solid rgba(61,220,151,.3);border-radius:7px;padding:3px 8px}
-h2{margin:0;font-size:clamp(17px,1.9vw,21px);font-weight:640;letter-spacing:-.01em}
-.lead{color:var(--muted);font-size:13.5px;max-width:92ch;margin:8px 0 18px}
+/* header */
+header{border-bottom:2px solid var(--ink)}
+.hdr{display:grid;grid-template-columns:repeat(12,1fr)}
+.hdr .title{grid-column:1/9;padding:30px 0 24px}
+.hdr .title h1{font-size:clamp(30px,4.4vw,56px);letter-spacing:-.04em;line-height:.98}
+.hdr .title h1 br:first-of-type{display:none}
+.hdr .title .sub{margin-top:16px;max-width:64ch;font-size:15px;color:var(--ink-2);line-height:1.5}
+.hdr .aside{grid-column:9/13;border-left:1px solid var(--rule);padding:30px 0 24px 26px}
+.hdr .aside dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:12.5px}
+.hdr .aside dt{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding-top:2px;white-space:nowrap}
+.hdr .aside dd{margin:0;font-variant-numeric:tabular-nums;line-height:1.45}
+@media(max-width:900px){
+  .hdr{grid-template-columns:1fr}
+  .hdr .title,.hdr .aside{grid-column:1/-1;padding:32px 0}
+  .hdr .aside{border-left:0;border-top:1px solid var(--rule);padding-left:0}
+}
 
-.atlas{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:18px;align-items:start}
-@media(max-width:1200px){.atlas{grid-template-columns:1fr}}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.card-h{padding:13px 16px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--panel3);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+/* metric strip */
+.strip{border-bottom:1px solid var(--rule);display:grid;grid-template-columns:repeat(5,1fr)}
+.strip .cell{padding:16px 16px 14px 0;border-right:1px solid var(--rule)}
+.strip .cell:last-child{border-right:0}
+.strip .cell .v{font-family:var(--mono);font-size:27px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.strip .cell .l{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:7px}
+@media(max-width:760px){.strip{grid-template-columns:repeat(2,1fr)}.strip .cell{border-bottom:1px solid var(--rule);padding-left:0}}
 
-.tlbar{padding:14px 16px 12px;background:var(--panel3);border-bottom:1px solid var(--line)}
-.tlrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.yearbig{font-family:var(--mono);font-size:34px;font-weight:600;color:var(--accent);line-height:1;min-width:84px}
-.sliderwrap{flex:1;min-width:280px}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;cursor:pointer;margin:0}
-input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,#26333f,#3ddc97)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-8px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);box-shadow:0 0 0 1px var(--accent),0 2px 8px rgba(0,0,0,.5)}
-input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:#26333f}
-input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid var(--bg)}
-.ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-top:2px;padding:0 2px}
-.btns{display:flex;gap:7px;flex-wrap:wrap}
-button{font-family:var(--sans);font-size:12.5px;padding:7px 12px;border-radius:9px;border:1px solid var(--line2);background:var(--panel);color:var(--fg);cursor:pointer;transition:.14s}
-button:hover{border-color:var(--accent);color:var(--accent)}
-button.on{background:var(--accent);color:#04160e;border-color:var(--accent);font-weight:650}
-button.sm{padding:5px 10px;font-size:12px}
+/* sections */
+section{border-bottom:1px solid var(--rule)}
+.sec-h{display:grid;grid-template-columns:repeat(12,1fr);padding:36px 0 20px;align-items:end}
+.sec-h .n{grid-column:1/2;font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;padding-bottom:7px}
+.sec-h h2{grid-column:2/9;font-size:clamp(23px,3vw,40px);padding-right:24px}
+.sec-h .d{grid-column:9/13;font-size:13.5px;color:var(--ink-2);line-height:1.5;padding-bottom:5px}
+@media(max-width:900px){.sec-h{grid-template-columns:1fr;gap:12px}.sec-h .n,.sec-h h2,.sec-h .d{grid-column:1/-1}.sec-h h2{padding-right:0}}
 
-.legend{padding:10px 16px 12px;background:var(--panel3);border-bottom:1px solid var(--line)}
-.legend .lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:7px}
-.lgit{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);margin:0 15px 6px 0}
-.sw{width:12px;height:12px;border-radius:3px;flex:0 0 auto;border:1px solid rgba(255,255,255,.16)}
-.swl{width:22px;height:0;border-top-width:2.5px;border-top-style:solid;flex:0 0 auto}
+/* atlas */
+.atlas{display:grid;grid-template-columns:minmax(0,1fr) 370px;border-top:1px solid var(--rule)}
+@media(max-width:1080px){.atlas{grid-template-columns:1fr}}
+.atlas>.right{border-left:1px solid var(--rule)}
+@media(max-width:1080px){.atlas>.right{border-left:0;border-top:1px solid var(--rule)}}
 
-#map{width:100%;display:block;background:#070b10;max-height:64vh}
-.land{fill:#182230;stroke:#24303d;stroke-width:.5}
-.country{stroke:#24303d;stroke-width:.5;cursor:pointer;transition:fill .45s}
-.country:hover{stroke:#eaf1f8;stroke-width:1.4}
-.hubdot{cursor:pointer}
-.hublabel{font-family:var(--mono);font-size:11px;fill:#b8cadb;pointer-events:none;paint-order:stroke;stroke:#070b10;stroke-width:2.6px;stroke-linejoin:round}
-.extlabel{font-family:var(--mono);font-size:11.5px;fill:#f0b429;pointer-events:none;paint-order:stroke;stroke:#070b10;stroke-width:2.6px;stroke-linejoin:round}
-.edge{stroke-width:1.6;fill:none}
-.edge.reg{stroke:#e05263;stroke-dasharray:5 4}
-.edge.fund{stroke:#3ddc97}
-.edge.par{stroke:#6ea8fe}
-.edge.rel{stroke:#c4a0f5}
+.controls{border-bottom:1px solid var(--rule);padding:12px 20px}
+.controls .row{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+
+.ybig{font-family:var(--mono);font-size:38px;font-weight:400;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums;min-width:116px}
+.slid{flex:1;min-width:220px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:transparent;cursor:pointer;margin:0;display:block}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--ink)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:24px;margin-top:-11px;background:var(--accent);border:0;border-radius:0}
+input[type=range]::-moz-range-track{height:2px;background:var(--ink)}
+input[type=range]::-moz-range-thumb{width:14px;height:24px;background:var(--accent);border:0;border-radius:0}
+.ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--ink-3);margin-top:8px}
+.btns{display:flex;border:1px solid var(--ink)}
+button{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:9px 13px;border:0;border-right:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:background .12s,color .12s}
+button:last-child{border-right:0}
+button:hover{background:var(--ink);color:var(--paper)}
+button.on{background:var(--accent);color:#fff}
+
+.legend{border-bottom:1px solid var(--rule);padding:11px 20px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr))}
+.lglabel{grid-column:1/-1;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:2px 0 7px}
+.lgitem{display:flex;align-items:center;gap:9px;font-size:12px;padding:5px 12px 5px 0;border-right:1px solid var(--rule)}
+.lgitem .k{width:16px;height:10px;flex:0 0 auto;border:1px solid rgba(0,0,0,.2)}
+.lgitem .kl{width:22px;height:0;border-top:2.5px solid;flex:0 0 auto}
+
+#map{width:100%;display:block;background:var(--paper)}
+.land{fill:#e7e7e1;stroke:#d0d0c9;stroke-width:.5}
+.country{stroke:#b9b9b1;stroke-width:.6;cursor:pointer;transition:fill .4s}
+.country:hover{stroke:var(--ink);stroke-width:1.5}
+.hublabel{font-family:var(--mono);font-size:10px;fill:#4a4a4a;pointer-events:none;paint-order:stroke;stroke:var(--paper);stroke-width:2.8px;stroke-linejoin:round}
+.extlabel{font-family:var(--mono);font-size:10px;fill:var(--blue);pointer-events:none;paint-order:stroke;stroke:var(--paper);stroke-width:2.8px;stroke-linejoin:round}
+.edge{stroke-width:1.4;fill:none}
+.edge.reg{stroke:#a51c0a;stroke-dasharray:5 3}
+.edge.fund{stroke:#1f7a3d}
+.edge.par{stroke:#1a4fd6}
+.edge.rel{stroke:#6b3fa0}
 .edgehit{stroke:transparent;stroke-width:12;fill:none;cursor:pointer}
 
-.controls{padding:12px 14px;background:var(--panel3);border-bottom:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.yearpill{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600}
-.tabs{display:flex;border-bottom:1px solid var(--line);background:var(--panel3)}
-.tabs button{border:0;border-radius:0;background:transparent;padding:12px 13px;font-size:12.5px;color:var(--muted);border-bottom:2px solid transparent;flex:1}
-.tabs button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:650;background:transparent}
-.pane{display:none;padding:15px}
+/* right column */
+.tabs{display:flex;border-bottom:1px solid var(--ink)}
+.tabs button{flex:1;border-right:1px solid var(--ink);padding:12px 6px;font-size:10px}
+.tabs button:last-child{border-right:0}
+.pane{display:none}
 .pane.on{display:block}
-.pane-scroll{max-height:min(72vh,740px);overflow-y:auto;overscroll-behavior:contain}
-.pane-scroll::-webkit-scrollbar{width:9px}
-.pane-scroll::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
-.pane-scroll::-webkit-scrollbar-track{background:transparent}
+.pscroll{max-height:min(78vh,920px);overflow-y:auto}
+.pscroll::-webkit-scrollbar{width:8px}
+.pscroll::-webkit-scrollbar-thumb{background:var(--rule-2)}
+.subbar{border-bottom:1px solid var(--rule);padding:12px 18px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.subbar b{color:var(--accent);font-weight:400}
 
-.case{border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-bottom:9px;background:var(--panel2);cursor:pointer;transition:.14s}
-.case:hover{border-color:var(--accent);transform:translateX(2px)}
-.case .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.case .cn{font-weight:620;font-size:13.5px}
-.case .yr{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
-.case .rg{font-size:12.5px;margin:5px 0 4px;font-weight:600}
-.case .dt{font-size:12.5px;color:#bccbd9;line-height:1.5;margin:4px 0 0}
-.case .src{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-top:7px}
-.cf{font-family:var(--mono);font-size:9.5px;padding:2px 7px;border-radius:5px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
-.cf.sourced{background:rgba(61,220,151,.14);color:var(--accent);border:1px solid rgba(61,220,151,.32)}
-.cf.reported{background:rgba(240,180,41,.13);color:var(--gold);border:1px solid rgba(240,180,41,.3)}
+.entry{padding:15px 18px;border-bottom:1px solid var(--rule);cursor:pointer;transition:background .12s}
+.entry:hover{background:#ecebe5}
+.entry .r1{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.entry .nm{font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+.entry .yr{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.entry .reg{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-top:6px}
+.entry .txt{font-size:13px;color:var(--ink-2);margin-top:6px;line-height:1.48}
+.entry .foot{margin-top:10px;display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);flex-wrap:wrap}
+.srcflag{border:1px solid var(--rule-2);padding:1px 6px}
+.srcflag.sourced{border-color:var(--r-licensing);color:var(--r-licensing)}
+.srcflag.reported{border-color:var(--r-drafting);color:var(--r-drafting)}
 
-.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
-.kv:last-child{border-bottom:0}
-.kv .k{font-family:var(--mono);font-size:12px;color:var(--muted)}
-.kv .v{font-family:var(--mono);font-size:12px;text-align:right}
+.cp{padding:20px}
+.cp h3{font-size:27px;letter-spacing:-.03em}
+.cp .meta{margin-top:9px;font-family:var(--mono);font-size:11px;color:var(--ink-3);line-height:1.7}
+.cprow{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--rule);padding:9px 0;font-size:13px}
+.cprow .k{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.cpnote{border-left:3px solid var(--accent);padding:11px 13px;background:#ecebe5;font-size:13px;margin:15px 0;line-height:1.5}
+.tl{margin-top:22px}
+.tl-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--ink);padding-bottom:7px;margin-bottom:2px}
+.tlrow{display:grid;grid-template-columns:42px 10px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--rule);font-size:12.5px;align-items:start}
+.tlrow .y{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.tlrow .d{width:9px;height:9px;margin-top:4px}
+.tlrow .t{color:var(--ink-2);line-height:1.45}
 
-.cp-h{font-size:17px;font-weight:640;margin:0 0 3px}
-.cp-s{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:12px}
-.cp-note{font-size:13px;color:#c6d4e1;background:var(--panel3);border-left:3px solid var(--accent);padding:10px 12px;border-radius:0 8px 8px 0;margin:11px 0}
-.trail{margin-top:14px}
-.trail-lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:8px}
-.trow{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
-.trow .ty{font-family:var(--mono);font-size:12px;color:var(--muted);width:38px;flex:0 0 auto}
-.trow .tdot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;margin-top:5px}
-.trow .tl{flex:1}
+/* chart */
+.chart{padding:26px 0 36px}
+.chart svg{width:100%;height:auto;display:block}
 
-.mrow{display:grid;grid-template-columns:56px minmax(0,1fr);gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
-.mrow:last-child{border-bottom:0}
-.bignum{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:17px;font-weight:600;border:1.5px solid;justify-self:center}
-.mrow h4{margin:0 0 4px;font-size:15px;font-weight:640}
-.mrow .role{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:7px}
-.mrow p{margin:0 0 8px;font-size:13px;color:#c3d2e0}
-.mrow ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--muted)}
-.mrow li{margin-bottom:3px}
-.mrow .q{font-family:var(--mono);font-size:11.5px;color:var(--gold);margin-top:8px}
+/* methods */
+.methods{border-top:1px solid var(--rule)}
+.mrow{display:grid;grid-template-columns:78px minmax(0,1.45fr) minmax(0,1fr);border-bottom:1px solid var(--rule)}
+.mrow .mn{font-family:var(--mono);font-size:12px;color:var(--accent);padding:28px 0 0;letter-spacing:.06em}
+.mrow .mb{padding:26px 28px 28px 0}
+.mrow .mb h3{font-size:19.5px;letter-spacing:-.02em}
+.mrow .mb .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
+.mrow .mb p{margin:12px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.52;max-width:54ch}
+.mrow .mq{border-left:1px solid var(--rule);padding:28px 0 28px 28px}
+.mrow .mq .qh{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.mrow .mq ul{margin:0;padding-left:15px;font-size:12.5px;color:var(--ink-2)}
+.mrow .mq li{margin-bottom:6px;line-height:1.45}
+@media(max-width:900px){
+  .mrow{grid-template-columns:46px 1fr}
+  .mrow .mq{grid-column:1/-1;border-left:0;border-top:1px solid var(--rule);padding:18px 0 22px}
+}
 
-.nest{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;align-items:center;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
-.nest svg{width:100%;max-width:440px;height:auto;display:block;margin:0 auto}
-.nest-list{display:flex;flex-direction:column;gap:12px}
-.nest-item{display:grid;grid-template-columns:14px minmax(0,1fr);gap:11px;align-items:start;font-size:13px;color:#c3d2e0}
-.nest-item .dotline{width:14px;height:14px;border-radius:50%;border:2px solid;margin-top:3px}
-.nest-item b{color:var(--fg)}
+/* frame */
+.frame{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
+.frame>div{padding:28px 28px 32px 0;border-right:1px solid var(--rule)}
+.frame>div:last-child{border-right:0;padding-left:28px}
+@media(max-width:860px){.frame{grid-template-columns:1fr}.frame>div{border-right:0;padding:24px 0}.frame>div:last-child{padding-left:0;border-top:1px solid var(--rule)}}
+.frame h3{font-size:16px;margin-bottom:13px}
+.frame ul{margin:0;padding-left:16px;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.frame li{margin-bottom:9px}
 
-.rolegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
-.rolecard{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px}
-.rolecard h5{margin:0 0 4px;font-size:13.5px;font-weight:640}
-.rolecard .rk{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px}
-.rolecard .desc{font-size:12.5px;color:var(--muted);margin:0 0 10px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:7px;background:var(--panel3);border:1px solid var(--line2);color:var(--fg);cursor:pointer}
-.chip:hover{border-color:var(--accent);color:var(--accent)}
+.pull{border-top:2px solid var(--ink);padding:32px 0}
+.pull .qh{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:15px}
+.pull p{margin:0;font-size:clamp(17px,2.2vw,26px);line-height:1.3;letter-spacing:-.022em;max-width:62ch;font-weight:500}
 
-.chartcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
-.chartcard svg{width:100%;height:auto;display:block}
-.note{border-left:3px solid var(--gold);background:rgba(240,180,41,.07);padding:14px 16px;border-radius:0 10px 10px 0;font-size:13.5px;margin:16px 0;line-height:1.6}
-.note.crit{border-left-color:#e05263;background:rgba(224,82,99,.07)}
-.note b{color:var(--fg)}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.infocard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
-.infocard h4{margin:0 0 10px;font-size:14px;font-weight:640}
-.infocard ul{margin:0;padding-left:18px;font-size:13px;color:#c3d2e0}
-.infocard li{margin-bottom:6px}
-footer{border-top:1px solid var(--line);padding:26px 0 70px;color:var(--dim);font-size:12.5px;margin-top:20px}
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+/* roles */
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:1px solid var(--rule)}
+.role{padding:22px 22px 24px 0;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.role h4{font-size:15px;letter-spacing:-.01em;line-height:1.25}
+.role .cnt{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
+.role .countries{margin-top:13px;display:flex;flex-wrap:wrap;gap:5px}
+.cchip{font-family:var(--mono);font-size:11px;padding:3px 8px;border:1px solid var(--rule-2);cursor:pointer}
+.cchip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* data */
+.data{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule)}
+.data>div{padding:26px 26px 30px 0;border-right:1px solid var(--rule)}
+.data>div:last-child{border-right:0;padding-left:26px}
+@media(max-width:900px){.data{grid-template-columns:1fr}.data>div{border-right:0;padding:24px 0}.data>div:last-child{padding-left:0;border-top:1px solid var(--rule)}}
+.data h3{font-size:15px;margin-bottom:13px}
+.data ul{margin:0;padding-left:16px;font-size:13px;color:var(--ink-2);line-height:1.55}
+.data li{margin-bottom:8px}
+
+footer{border-top:2px solid var(--ink);padding:26px 0 64px}
+footer .fg{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 </style>
 </head>
 <body>
 
-<header><div class="wrap hdr">
-  <div class="row">
-    <div>
-      <h1>Zonal Sovereignty Atlas</h1>
-      <p class="sub">Крипто-режимы и хабы Африки, 2013–2026. Пространственная модель перераспределения суверенитета: государство применяет разные правовые режимы к разным частям своей территории, чтобы встроиться в глобальные потоки.</p>
-      <div class="badges">
-        <span class="badge">19 стран</span>
-        <span class="badge">173 записи реестра</span>
-        <span class="badge">6 внешних узлов</span>
-        <span class="badge">10 связей</span>
-        <span class="badge hot">демо-корпус</span>
-      </div>
+<header><div class="wrap">
+  <div class="hdr">
+    <div class="title">
+      <div class="kicker">Пространственный анализ · 23.10.2026</div>
+      <h1>Zonal<br>Sovereignty<br>Atlas</h1>
+      <p class="sub">Крипто-режимы и хабы Африки, 2013–2026. Государство не отдаёт суверенитет, а перераспределяет его применение: на ограниченной площадке вводится иной правовой режим, чтобы получить доступ к глобальным потокам.</p>
     </div>
-    <div class="meta">срез 23.10.2026<br>рамка: graduated sovereignty<br>источники: открытые<br>статус: не верифицировано построчно</div>
+    <div class="aside">
+      <dl>
+        <dt>Объект</dt><dd>Особые правовые режимы<br>для крипто-активов</dd>
+        <dt>Регион</dt><dd>Африка, 19 государств</dd>
+        <dt>Период</dt><dd>2013–2026</dd>
+        <dt>Рамка</dt><dd>Graduated sovereignty<br>(Aihwa Ong, 1999/2006)</dd>
+        <dt>Данные</dt><dd>Открытые источники</dd>
+        <dt>Статус</dt><dd>Демо-корпус.<br>Не верифицировано построчно.</dd>
+      </dl>
+    </div>
   </div>
 </div></header>
 
 <div class="wrap">
+  <div class="strip">
+    <div class="cell"><div class="v" id="s-countries">19</div><div class="l">Государств</div></div>
+    <div class="cell"><div class="v" id="s-records">173</div><div class="l">Записей реестра</div></div>
+    <div class="cell"><div class="v" id="s-nodes">5</div><div class="l">Внешних узлов</div></div>
+    <div class="cell"><div class="v" id="s-edges">10</div><div class="l">Связей графа</div></div>
+    <div class="cell"><div class="v" id="s-sourced">64</div><div class="l">Со ссылкой на источник</div></div>
+  </div>
+</div>
 
-  <section class="sec">
-    <div class="sec-head"><span class="sec-num">01</span><h2>Атлас: режимы по годам и связи</h2></div>
-    <p class="lead">Двигай ползунок — карта перекрашивается по режиму выбранного года. Нажми на страну, чтобы увидеть её траекторию. Кнопка «Связи» включает граф зависимостей; внешние узлы (Дубай, Сингапур, Цюрих, Абу-Даби) подписаны прямо на карте.</p>
+<div class="wrap">
+
+  <section>
+    <div class="sec-h">
+      <div class="n">01</div>
+      <h2>Атлас: режимы по годам и структура связей</h2>
+      <div class="d">Ползунок перекрашивает карту по режиму выбранного года. Клик по стране открывает траекторию и связи. Переключатель «Граф» управляет отображением рёбер.</div>
+    </div>
 
     <div class="atlas">
-      <div class="card">
-        <div class="card-h"><span>Карта · Африка + внешние узлы</span><span id="mapyear" style="color:var(--accent);font-family:var(--mono)">2026</span></div>
-
-        <div class="tlbar">
-          <div class="tlrow">
-            <div class="yearbig" id="bigyear">2026</div>
-            <div class="sliderwrap">
+      <div class="left">
+        <div class="controls">
+          <div class="row">
+            <div class="ybig" id="ybig">2026</div>
+            <div class="slid">
               <input type="range" id="slider" min="2013" max="2026" value="2026" step="1">
               <div class="ticks"><span>2013</span><span>2014</span><span>2016</span><span>2018</span><span>2020</span><span>2022</span><span>2024</span><span>2026</span></div>
             </div>
             <div class="btns">
-              <button id="playBtn">▶ Проиграть</button>
-              <button class="sm" data-y="2013">2013</button>
-              <button class="sm" data-y="2018">2018</button>
-              <button class="sm" data-y="2021">2021</button>
-              <button class="sm" data-y="2026">2026</button>
-              <button id="netBtn" class="on">Связи</button>
+              <button id="playBtn">Проиграть</button>
+              <button data-y="2013">2013</button>
+              <button data-y="2018">2018</button>
+              <button data-y="2021">2021</button>
+              <button data-y="2026">2026</button>
+              <button id="netBtn" class="on">Граф</button>
             </div>
           </div>
         </div>
 
         <div class="legend">
-          <div class="lbl">Режим регулирования</div>
-          <span class="lgit"><span class="sw" style="background:#b3202c"></span>Запрет</span>
-          <span class="lgit"><span class="sw" style="background:#d97706"></span>Ограничительный</span>
-          <span class="lgit"><span class="sw" style="background:#eab308"></span>Проект/переход</span>
-          <span class="lgit"><span class="sw" style="background:#84cc16"></span>Песочница</span>
-          <span class="lgit"><span class="sw" style="background:#16a34a"></span>Лицензирование</span>
-          <span class="lgit"><span class="sw" style="background:#0d9488"></span>Открытый</span>
-          <div class="lbl" style="margin-top:9px">Типы связей</div>
-          <span class="lgit"><span class="swl" style="border-top-color:#3ddc97"></span>Инвестиции</span>
-          <span class="lgit"><span class="swl" style="border-top-color:#6ea8fe"></span>Партнёрство</span>
-          <span class="lgit"><span class="swl" style="border-top-color:#c4a0f5"></span>Релокация</span>
-          <span class="lgit"><span class="swl" style="border-top-color:#e05263;border-top-style:dashed"></span>Регистрация</span>
+          <div class="lglabel">Режим регулирования</div>
+          <div class="lgitem"><span class="k" style="background:#a51c0a"></span>Запрет</div>
+          <div class="lgitem"><span class="k" style="background:#c25e00"></span>Ограничительный</div>
+          <div class="lgitem"><span class="k" style="background:#b89500"></span>Проект / переход</div>
+          <div class="lgitem"><span class="k" style="background:#5f8a00"></span>Песочница</div>
+          <div class="lgitem"><span class="k" style="background:#1f7a3d"></span>Лицензирование</div>
+          <div class="lgitem"><span class="k" style="background:#0a6f6a"></span>Открытый</div>
+          <div class="lglabel" style="padding-top:12px">Тип связи</div>
+          <div class="lgitem"><span class="kl" style="border-top-color:#1f7a3d"></span>Инвестиции</div>
+          <div class="lgitem"><span class="kl" style="border-top-color:#1a4fd6"></span>Партнёрство</div>
+          <div class="lgitem"><span class="kl" style="border-top-color:#6b3fa0"></span>Релокация</div>
+          <div class="lgitem"><span class="kl" style="border-top-color:#a51c0a;border-top-style:dashed"></span>Регистрация</div>
         </div>
 
-        <svg id="map" viewBox="160 50 970 700" preserveAspectRatio="xMidYMid meet"></svg>
+        <svg id="map" viewBox="120 40 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
 
-      <div class="card">
+      <div class="right">
         <div class="tabs">
           <button class="on" data-pane="cases">События</button>
           <button data-pane="country">Страна</button>
           <button data-pane="net">Связи</button>
         </div>
-
         <div class="pane on" id="pane-cases">
-          <div class="controls">
-            <span class="yearpill">Год: <span id="sideyear">2026</span></span>
-            <span style="font-size:11.5px;color:var(--dim)" id="casecount"></span>
-          </div>
-          <div class="pane-scroll"><div id="caseList"></div></div>
+          <div class="subbar"><span>Год <b id="sy">2026</b></span><span id="ccount"></span></div>
+          <div class="pscroll"><div id="caseList"></div></div>
         </div>
-
-        <div class="pane" id="pane-country"><div class="pane-scroll"><div id="countryPane"></div></div></div>
-        <div class="pane" id="pane-net"><div class="pane-scroll"><div id="netPane"></div></div></div>
+        <div class="pane" id="pane-country"><div class="pscroll"><div id="countryPane"></div></div></div>
+        <div class="pane" id="pane-net"><div class="pscroll"><div id="netPane"></div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="sec">
-    <div class="sec-head"><span class="sec-num">02</span><h2>Волна: сколько стран в каждом режиме, по годам</h2></div>
-    <p class="lead">Последовательность, на которой держится событийный анализ: запреты 2017–2022 → проекты 2023–2024 → лицензирование 2025–2026. Столбик = год, сегменты = число стран в каждом режиме.</p>
-    <div class="chartcard"><svg id="wave" viewBox="0 0 1200 340"></svg></div>
+  <section>
+    <div class="sec-h">
+      <div class="n">02</div>
+      <h2>Волна: число государств в каждом режиме по годам</h2>
+      <div class="d">Последовательность, на которой держится событийный анализ. Столбик — год, сегменты — сколько государств находилось в каждом режиме.</div>
+    </div>
+    <div class="chart"><svg id="wave" viewBox="0 0 1200 380"></svg></div>
   </section>
 
-  <section class="sec">
-    <div class="sec-head"><span class="sec-num">03</span><h2>Методы: вложенная конструкция</h2></div>
-    <p class="lead">Не список приёмов, а пять уровней на один вопрос. Внешний слой задаёт паттерн, внутренние объясняют механизм.</p>
-
-    <div class="nest" style="margin-bottom:20px">
-      <svg viewBox="0 0 440 440" aria-label="Вложенные методы">
-        <circle cx="220" cy="215" r="190" fill="none" stroke="#3ddc97" stroke-width="1.8" opacity=".9"/>
-        <circle cx="220" cy="215" r="148" fill="none" stroke="#f0b429" stroke-width="1.8" opacity=".9"/>
-        <circle cx="220" cy="215" r="106" fill="none" stroke="#6ea8fe" stroke-width="1.8" opacity=".9"/>
-        <circle cx="220" cy="215" r="64" fill="none" stroke="#c4a0f5" stroke-width="1.8" opacity=".9"/>
-        <circle cx="220" cy="215" r="24" fill="none" stroke="#93a6b8" stroke-width="1.8" opacity=".9"/>
-        <circle cx="220" cy="215" r="4" fill="#eaf1f8"/>
-        <text x="220" y="424" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#6b8095">один объект · пять уровней доказательства</text>
-      </svg>
-      <div class="nest-list">
-        <div class="nest-item"><span class="dotline" style="border-color:#3ddc97"></span><div><b>Event analysis</b> — внешний слой: хронология с атрибуцией. Задаёт паттерн, который объясняют остальные уровни.</div></div>
-        <div class="nest-item"><span class="dotline" style="border-color:#f0b429"></span><div><b>Пространственный анализ</b> — где идёт волна: срезы по годам, кластеризация, проверка анклавности.</div></div>
-        <div class="nest-item"><span class="dotline" style="border-color:#6ea8fe"></span><div><b>Сетевой анализ</b> — ядро: кто с кем связан, роль страны в графе зависимостей.</div></div>
-        <div class="nest-item"><span class="dotline" style="border-color:#c4a0f5"></span><div><b>Кейс</b> — разбор отдельной страны: почему именно там, кто решил.</div></div>
-        <div class="nest-item"><span class="dotline" style="border-color:#93a6b8"></span><div><b>Ретроспектива</b> — ядро вывода: как менялась роль страны в международных отношениях.</div></div>
-      </div>
+  <section>
+    <div class="sec-h">
+      <div class="n">03</div>
+      <h2>Методы: вложенная конструкция</h2>
+      <div class="d">Четыре уровня на один вопрос. Внешний задаёт паттерн, внутренние объясняют механизм. Каждый уровень опирается на предыдущий и проверяет его.</div>
     </div>
 
-    <div class="card" style="padding:6px 22px">
+    <div class="methods">
       <div class="mrow">
-        <div class="bignum" style="color:#3ddc97;border-color:rgba(61,220,151,.4)">1</div>
-        <div>
-          <div class="role">основание · задаёт паттерн</div>
-          <h4>Event analysis — хронология с атрибуцией</h4>
-          <p>Реестр датированных событий по каждому государству: закон, запрет, лицензия, хаб, соглашение.</p>
+        <div class="mn">01</div>
+        <div class="mb">
+          <h3>Event analysis — хронология с атрибуцией</h3>
+          <div class="tag">Основание · задаёт паттерн</div>
+          <p>Реестр датированных событий по каждому государству: закон, запрет, лицензия, хаб, соглашение. Каждая запись привязана к источнику и помечена уровнем достоверности.</p>
+        </div>
+        <div class="mq">
+          <div class="qh">Что даёт</div>
           <ul>
             <li>Единица анализа: страна × год</li>
-            <li>Кодирование: тип события + режим + источник</li>
-            <li>Результат: последовательность и зависимость между событиями</li>
+            <li>Кодирование: тип события, режим, источник</li>
+            <li>Отвечает, кто ведёт процесс — государство или рынок</li>
+            <li>Прогноз не заявляется</li>
           </ul>
-          <div class="q">Что даёт: отвечает, кто ведёт процесс — государство или рынок. Прогноз не заявляется.</div>
         </div>
       </div>
+
       <div class="mrow">
-        <div class="bignum" style="color:#f0b429;border-color:rgba(240,180,41,.4)">2</div>
-        <div>
-          <div class="role">пространство · где</div>
-          <h4>Пространственный анализ</h4>
-          <p>Как волна распространяется по континенту и группируются ли хабы.</p>
+        <div class="mn">02</div>
+        <div class="mb">
+          <h3>Пространственный анализ</h3>
+          <div class="tag">Пространство · где</div>
+          <p>Как волна распространяется по континенту и группируются ли хабы в пространстве. Различает случайное распределение и региональную диффузию.</p>
+        </div>
+        <div class="mq">
+          <div class="qh">Что даёт</div>
           <ul>
-            <li>Срезы по годам — ползунок в разделе 01</li>
-            <li>Кластеризация (Moran's I): случайность или региональная диффузия</li>
+            <li>Срезы по годам — раздел 01</li>
+            <li>Кластеризация (Moran's I)</li>
             <li>Изохроны: зона связана с территорией или изолирована</li>
+            <li>Отличает анклав от развития</li>
           </ul>
-          <div class="q">Что даёт: отличает анклав от развития. Изолированная зона = поток идёт мимо страны.</div>
         </div>
       </div>
+
       <div class="mrow">
-        <div class="bignum" style="color:#6ea8fe;border-color:rgba(110,168,254,.45)">3</div>
-        <div>
-          <div class="role">ядро · кто с кем</div>
-          <h4>Сетевой анализ</h4>
-          <p>Граф связей между африканскими узлами и внешними центрами: Дубай, Сингапур, Гонконг, Цюрих, Абу-Даби.</p>
+        <div class="mn">03</div>
+        <div class="mb">
+          <h3>Сетевой анализ</h3>
+          <div class="tag">Ядро · кто с кем</div>
+          <p>Граф связей между африканскими узлами и внешними центрами: Дубай, Сингапур, Гонконг, Цюрих, Абу-Даби. Роль государства определяется направлением рёбер, а не размером рынка.</p>
+        </div>
+        <div class="mq">
+          <div class="qh">Что даёт</div>
           <ul>
             <li>Узлы: хабы, регуляторы, внешние центры</li>
             <li>Рёбра: релокации, инвестиции, партнёрства, регистрации</li>
             <li>Роли: метрополия / посредник / оболочка / источник</li>
+            <li>Государство с входящими связями и без исходящих — получатель, а не хаб</li>
           </ul>
-          <div class="q">Что даёт: роль страны видна по направлению рёбер, а не по размеру рынка.</div>
         </div>
       </div>
+
       <div class="mrow">
-        <div class="bignum" style="color:#c4a0f5;border-color:rgba(196,160,245,.45)">4</div>
-        <div>
-          <div class="role">глубина · почему</div>
-          <h4>Кейс и ретроспектива</h4>
-          <p>Разбор отдельных стран вглубь и сравнение их места в мире до и после.</p>
+        <div class="mn">04</div>
+        <div class="mb">
+          <h3>Кейс и ретроспектива</h3>
+          <div class="tag">Глубина · почему</div>
+          <p>Разбор отдельных государств вглубь и сравнение их места в международных отношениях до и после появления режима.</p>
+        </div>
+        <div class="mq">
+          <div class="qh">Что даёт</div>
           <ul>
             <li>Process tracing по 3–4 странам</li>
             <li>Роль в международных отношениях: была / стала</li>
             <li>Кластерная типология государств</li>
+            <li>Объясняет механизм, а не только паттерн</li>
           </ul>
-          <div class="q">Что даёт: механизм. Количественные уровни показывают паттерн, этот — объясняет, почему он такой.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="sec">
-    <div class="sec-head"><span class="sec-num">04</span><h2>Рамка: суверенитет перераспределяется, а не теряется</h2></div>
-    <p class="lead">Aihwa Ong, <i>graduated sovereignty</i> (1999/2006). Государство не отдаёт суверенитет — оно перераспределяет его применение: на ограниченной площадке действует иной правовой режим, чтобы получить доступ к глобальным потокам.</p>
-    <div class="two">
-      <div class="infocard">
-        <h4>Что видно на данных</h4>
+  <section>
+    <div class="sec-h">
+      <div class="n">04</div>
+      <h2>Рамка: суверенитет перераспределяется, а не теряется</h2>
+      <div class="d">Aihwa Ong, graduated sovereignty. Государство применяет разные правовые режимы к разным частям своей территории, чтобы встроиться в глобальные потоки.</div>
+    </div>
+
+    <div class="frame">
+      <div>
+        <h3>Что видно на данных</h3>
         <ul>
-          <li><b>Эфиопия</b> — криптоплатежи прямо запрещены (Proclamation 1359/2024), майнинг биткоина лицензируется. Два противоположных режима на одной территории.</li>
-          <li><b>Сейшелы</b> — BitMEX зарегистрирован в 2014, операции глобальные, страна не получает операционного следа.</li>
-          <li><b>Маврикий</b> — с 2018 продаёт лицензии песочницы как шлюз на континент.</li>
+          <li><b>Эфиопия</b> — криптоплатежи прямо запрещены (Proclamation 1359/2024), при этом майнинг биткоина лицензируется. Два противоположных режима на одной территории.</li>
+          <li><b>Сейшелы</b> — BitMEX зарегистрирован в 2014 по International Business Companies Act. Операции глобальные, государство не получает операционного следа.</li>
+          <li><b>Маврикий</b> — с 2018 продаёт лицензии регуляторной песочницы как шлюз на континент.</li>
           <li><b>Нигерия</b> — запрет банкам в 2021 при втором месте в мире по бытовому использованию крипты.</li>
         </ul>
       </div>
-      <div class="infocard">
-        <h4>Неоколониализм как экспорт юрисдикции</h4>
-        <p style="font-size:13px;color:#c3d2e0;margin:0 0 10px">Классическая критика: Африка экспортирует сырьё. Здесь — экспортирует правовую оболочку.</p>
+      <div>
+        <h3>Неоколониализм как экспорт юрисдикции</h3>
         <ul>
-          <li>Зона объявлена, но потока нет</li>
-          <li>Фирма зарегистрирована вне континента</li>
-          <li>Капитал приходит через Залив</li>
-          <li>Извлекается не ресурс, а юрисдикция</li>
+          <li>Классическая критика описывает экспорт сырья. Здесь экспортируется правовая оболочка.</li>
+          <li>Зона объявлена, но потока операций нет.</li>
+          <li>Фирма зарегистрирована вне континента.</li>
+          <li>Капитал приходит через Залив, а не изнутри.</li>
+          <li>Извлекается не ресурс, а юрисдикция.</li>
         </ul>
       </div>
     </div>
-    <div class="note crit"><b>Развилка для статьи.</b> Ong описывала сильные государства Юго-Восточной Азии, которые управляют зонами стратегически. В африканских кейсах государство часто слабое, и зона может быть не инструментом стратегии, а симптомом её отсутствия. Отсюда рабочий вопрос: <i>крипто-зона — инструмент суверенной стратегии или симптом её отсутствия?</i> Руанда — вероятно, стратегия. Сейшелы — вероятно, симптом. Разные случаи дают разные ответы, и это делает вывод проверяемым.</div>
-  </section>
 
-  <section class="sec">
-    <div class="sec-head"><span class="sec-num">05</span><h2>Роли стран в сети</h2></div>
-    <p class="lead">Роль определяется направлением рёбер, а не размером рынка. Клик по стране — её траектория и связи.</p>
-    <div class="rolegrid" id="roleGrid"></div>
-    <div style="margin-top:18px">
-      <div class="lbl" style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:10px">Внешние узлы</div>
-      <div class="rolegrid" id="extGrid"></div>
+    <div class="pull">
+      <div class="qh">Развилка исследования</div>
+      <p>Является ли крипто-зона инструментом суверенной стратегии — или симптомом отсутствия стратегии? Ong описывала сильные государства Юго-Восточной Азии. В африканских кейсах государство часто слабое. Руанда — вероятно, стратегия. Сейшелы — вероятно, симптом. Разные случаи дают разные ответы, и это делает вывод проверяемым.</p>
     </div>
   </section>
 
-  <section class="sec">
-    <div class="sec-head"><span class="sec-num">06</span><h2>Данные и статус верификации</h2></div>
-    <p class="lead">Реестр собран из открытых источников. Каждая запись помечена уровнем достоверности. Это демонстрационный корпус — не пригоден для публикации без построчной проверки по первоисточникам.</p>
-    <div class="grid3">
-      <div class="infocard">
-        <h4>Уровни достоверности</h4>
-        <div style="display:flex;flex-direction:column;gap:9px;font-size:13px">
-          <div><span class="cf sourced">sourced</span> — есть конкретный источник: закон, регулятор, агентство</div>
-          <div><span class="cf reported">reported</span> — сообщено в медиа или обзоре, первоисточник не сверен</div>
-        </div>
-        <div style="margin-top:13px;font-family:var(--mono);font-size:11.5px;color:var(--accent)" id="confCounts"></div>
-      </div>
-      <div class="infocard">
-        <h4>Ограничения</h4>
+  <section>
+    <div class="sec-h">
+      <div class="n">05</div>
+      <h2>Роли государств в сети</h2>
+      <div class="d">Роль определяется направлением рёбер, а не размером рынка. Клик по названию открывает траекторию и связи государства.</div>
+    </div>
+    <div class="roles" id="roleGrid"></div>
+    <div class="sec-h" style="padding:36px 0 18px">
+      <div class="n">05б</div>
+      <h2 style="font-size:20px">Внешние узлы графа</h2>
+      <div class="d">Центры, к которым подключены африканские хабы.</div>
+    </div>
+    <div class="roles" id="extGrid"></div>
+  </section>
+
+  <section>
+    <div class="sec-h">
+      <div class="n">06</div>
+      <h2>Данные и статус верификации</h2>
+      <div class="d">Реестр собран из открытых источников. Каждая запись помечена уровнем достоверности. Это демонстрационный корпус — не пригоден для публикации без построчной проверки.</div>
+    </div>
+    <div class="data">
+      <div>
+        <h3>Уровни достоверности</h3>
         <ul>
-          <li>Годы режимов 2013–2017 кодированы обзорно — требуют сверки</li>
+          <li><b>sourced</b> — есть конкретный источник: закон, регулятор, агентство</li>
+          <li><b>reported</b> — сообщено в медиа или обзоре, первоисточник не сверен</li>
+        </ul>
+        <div class="mono" style="margin-top:13px;font-size:12px;color:var(--accent)" id="confCounts"></div>
+      </div>
+      <div>
+        <h3>Ограничения</h3>
+        <ul>
+          <li>Годы режимов 2013–2017 кодированы обзорно, требуют сверки</li>
           <li>Реестр связей неполон: 10 рёбер из необходимых ~60–100</li>
           <li>Маврикий и Сейшелы отсутствуют в геометрии 110m — отрисованы маркерами</li>
           <li>Данные о транзакциях (Chainalysis) занижают P2P-оборот</li>
           <li>Дискурсивный слой не включён — отдельная работа</li>
         </ul>
       </div>
-      <div class="infocard">
-        <h4>Источники</h4>
+      <div>
+        <h3>Источники</h3>
         <ul>
           <li><b>Регуляторы:</b> CBN, CBK, FSCA, BoG, BNR, NBR, NBE, FSC Mauritius, NBFIRA, BAM, CBE, RBZ, BoZ, BoU, BCEAO, BEAC</li>
           <li><b>Отчёты:</b> CV VC + Absa Africa Blockchain Report, Chainalysis Global Crypto Adoption Index, IMF Nigeria SIP 2025/096</li>
@@ -406,158 +487,145 @@ footer{border-top:1px solid var(--line);padding:26px 0 70px;color:var(--dim);fon
 </div>
 
 <footer><div class="wrap">
-  Zonal Sovereignty Atlas · демонстрационный корпус, 23.10.2026 · не верифицировано построчно · рамка: Aihwa Ong, graduated sovereignty
+  <div class="fg">
+    <span>Zonal Sovereignty Atlas · демо-корпус</span>
+    <span>Не верифицировано построчно</span>
+    <span>Рамка: Aihwa Ong, graduated sovereignty</span>
+    <span>23.10.2026</span>
+  </div>
 </div></footer>
 
 <script>
-const DATA = {"meta":{"title":"Zonal Sovereignty Atlas — Africa Crypto Regimes, 2013–2026","built":"2026-10-23","verification":"Демонстрационный корпус. Собран из открытых источников, НЕ верифицирован построчно по первоисточникам. См. поле confidence у каждой записи.","confidence_levels":{"sourced":"Есть конкретный источник (закон/регулятор/агентство), указан в source","reported":"Сообщено в медиа или отраслевом обзоре, первоисточник не сверен","needs_check":"Требует проверки — противоречие между источниками или неясная дата"},"regimes":{"prohibitive":{"label":"Запрет","color":"#b3202c","desc":"Прямой запрет или уголовная ответственность"},"restrictive":{"label":"Ограничительный","color":"#d97706","desc":"Банкам запрещено, владение не запрещено; двойной режим"},"drafting":{"label":"Проект/переход","color":"#eab308","desc":"Закон в разработке или принят без работающего лицензирования"},"sandbox":{"label":"Песочница","color":"#84cc16","desc":"Регуляторная песочница / инкубация"},"licensing":{"label":"Лицензирование","color":"#16a34a","desc":"Работающая система лицензий"},"open":{"label":"Открытый","color":"#0d9488","desc":"Лицензирование работает, рынок развит"}},"event_types":{"product":"Первый работающий рыночный продукт","institution":"Хаб, ассоциация, акселератор, сообщество","law":"Регуляторный акт","partnership":"Межгосударственное или корпоративное соглашение","funding":"Инвестиционный или отчётный сигнал"}},"countries":[{"code":"NG","name":"Nigeria","ru":"Нигерия","coords":[8.6753,9.082],"hub_city":"Lagos","hub_coords":[3.3792,6.5244],"timeline":[{"year":2014,"regime":"restrictive","confidence":"reported"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"restrictive","confidence":"reported"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"prohibitive","confidence":"sourced","note":"5 фев: циркуляр CBN — банкам запрещено обслуживать крипто-биржи"},{"year":2022,"regime":"prohibitive","confidence":"sourced"},{"year":2023,"regime":"drafting","confidence":"sourced","note":"Дек: CBN снимает запрет на банковские операции; ISA 2023 относит цифровые активы к ценным бумагам"},{"year":2024,"regime":"sandbox","confidence":"sourced","note":"Авг: SEC запускает ARIP — первая когорта площадок в песочнице"},{"year":2025,"regime":"licensing","confidence":"sourced","note":"ISA 2025: все биржи обязаны иметь лицензию SEC. Quidax, Busha — первые лицензии"},{"year":2026,"regime":"licensing","confidence":"reported"}],"metrics":{"adoption_rank_2025":2,"onchain_value_2025_usd_bn":92.1,"vc_share_deals_pct":33},"role":"источник, отдающий вовне"},{"code":"KE","name":"Kenya","ru":"Кения","coords":[37.9062,-0.0236],"hub_city":"Nairobi","hub_coords":[36.8219,-1.2921],"timeline":[{"year":2013,"regime":"restrictive","confidence":"sourced","note":"9 июля: Kipochi — первый крипто-продукт в Африке (биткоин-кошелёк + M-Pesa)"},{"year":2014,"regime":"restrictive","confidence":"reported"},{"year":2015,"regime":"restrictive","confidence":"sourced","note":"CBK предупреждение о виртуальных валютах"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"restrictive","confidence":"reported","note":"CBK запрещает банкам обслуживать крипто (циркуляр)"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"drafting","confidence":"reported","note":"Проект политики по цифровым активам; CMA получает мандат"},{"year":2023,"regime":"drafting","confidence":"sourced","note":"Май: партнёрство с Venom Foundation (ADGM, Абу-Даби) — строительство блокчейн-хаба в Найроби"},{"year":2024,"regime":"drafting","confidence":"reported"},{"year":2025,"regime":"licensing","confidence":"sourced","note":"4 апр внесён VASP Bill; 13 окт принят парламентом; 15 окт assent; вступил 4 ноя 2025"},{"year":2026,"regime":"licensing","confidence":"sourced","note":"17 мар: проект регламентов; 24 июл: регламенты опубликованы (CBK — платежи/стейблкоины, CMA — биржи). Лицензии ещё не выданы"}],"metrics":{"adoption_rank_2025":10,"vc_share_deals_pct":13},"role":"посредник"},{"code":"ZA","name":"South Africa","ru":"ЮАР","coords":[22.9375,-30.5595],"hub_city":"Cape Town","hub_coords":[18.4241,-33.9249],"timeline":[{"year":2013,"regime":"restrictive","confidence":"sourced","note":"BitX основан в Стелленбоше (позже Luno)"},{"year":2014,"regime":"restrictive","confidence":"reported","note":"SARB публичное предупреждение, но без запрета"},{"year":2015,"regime":"restrictive","confidence":"sourced","note":"BitX привлекает $4 млн от Naspers; штаб-квартира → Сингапур"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"sandbox","confidence":"reported","note":"SARB запускает межбанковский проект Project Khokha"},{"year":2019,"regime":"sandbox","confidence":"sourced","note":"IFWG Crypto Asset Regulatory Working Group — первый официальный регуляторный трек"},{"year":2020,"regime":"sandbox","confidence":"reported"},{"year":2021,"regime":"sandbox","confidence":"reported"},{"year":2022,"regime":"drafting","confidence":"sourced","note":"19 окт: FSCA объявляет крипто-активы финансовым продуктом по FAIS"},{"year":2023,"regime":"licensing","confidence":"sourced","note":"1 июн: FSCA открывает лицензирование CASP. Первая работающая система лицензий в Африке"},{"year":2024,"regime":"open","confidence":"sourced","note":"На 10 дек: 248 заявок, 248 рассмотрено, лицензии выдаются. Крупнейший формальный крипто-рынок Африки"},{"year":2025,"regime":"open","confidence":"sourced","note":"~300 из 512 заявок одобрено; 81 расследование по нелицензированной деятельности"},{"year":2026,"regime":"open","confidence":"reported","note":"Открытие национальной платёжной системы для небанковских участников"}],"metrics":{"vc_share_funding_pct":18},"role":"метрополия (региональная)"},{"code":"GH","name":"Ghana","ru":"Гана","coords":[-1.0232,7.9465],"hub_city":"Accra","hub_coords":[-0.187,5.6037],"timeline":[{"year":2013,"regime":"restrictive","confidence":"reported"},{"year":2014,"regime":"restrictive","confidence":"reported"},{"year":2015,"regime":"restrictive","confidence":"reported"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"restrictive","confidence":"sourced","note":"BoG предупреждение против крипто"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported","note":"BoG анонсирует планы по eCedi (CBDC)"},{"year":2022,"regime":"restrictive","confidence":"reported"},{"year":2023,"regime":"drafting","confidence":"sourced","note":"Проект VASP Bill внесён; публичные консультации"},{"year":2024,"regime":"drafting","confidence":"reported"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Принят Virtual Asset Service Providers Act, 2025 (Act 1154). BoG создаёт полноценный департамент, но лицензии ещё не выдаются"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Авг: BoG заявляет о полной операционализации к 2027. На дек 2026 — окна лицензирования всё ещё нет"}],"metrics":{},"role":"ожидающий (закон есть, рынка нет)"},{"code":"RW","name":"Rwanda","ru":"Руанда","coords":[29.8739,-1.9403],"hub_city":"Kigali","hub_coords":[30.0619,-1.9441],"timeline":[{"year":2018,"regime":"restrictive","confidence":"reported","note":"NBR предупреждает против крипто"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"drafting","confidence":"reported","note":"NBR исследует CBDC; Национальный банк изучает цифровой франк"},{"year":2022,"regime":"sandbox","confidence":"sourced","note":"RDB/BNR запускают регуляторную песочницу для финтеха"},{"year":2023,"regime":"sandbox","confidence":"sourced","note":"Virtual Assets Policy 2023 — первая официальная политика"},{"year":2024,"regime":"sandbox","confidence":"reported"},{"year":2025,"regime":"drafting","confidence":"reported","note":"Законопроект о виртуальных активах в разработке"},{"year":2026,"regime":"licensing","confidence":"sourced","note":"5 мая: парламент принимает закон о виртуальных активах 69-0; Закон № 023/2026 от 25 мая, опубликован в Gazette 28 мая, вступил в силу. CMA — регулятор, NBR — со-координатор"}],"metrics":{},"role":"посредник (стратегия государства)"},{"code":"ET","name":"Ethiopia","ru":"Эфиопия","coords":[40.4897,9.145],"hub_city":"Addis Ababa","hub_coords":[38.7469,9.025],"timeline":[{"year":2022,"regime":"drafting","confidence":"reported","note":"Майнинг биткоина начинает допускаться на государственные энергомощности"},{"year":2023,"regime":"restrictive","confidence":"sourced","note":"Proclamation No. 1282/2023 — поправка к платёжным системам"},{"year":2024,"regime":"restrictive","confidence":"sourced","note":"Proclamation No. 1359/2024 — криптоплатежи прямо запрещены; NBE получает мандат. НО майнинг лицензируется"},{"year":2025,"regime":"restrictive","confidence":"reported","note":"Тендеры на майнинг-мощности для иностранных операторов (в т.ч. из Китая)"},{"year":2026,"regime":"restrictive","confidence":"sourced","note":"Фев: публичное уведомление NBE против P2P-операций с привязкой к быру. Двойной режим зафиксирован окончательно"}],"metrics":{},"role":"двойной режим (запрет платежей + лицензированный майнинг)"},{"code":"MU","name":"Mauritius","ru":"Маврикий","coords":[57.5522,-20.3484],"hub_city":"Port Louis","hub_coords":[57.5012,-20.1654],"timeline":[{"year":2016,"regime":"sandbox","confidence":"sourced","note":"Regulatory Sandbox Licence (RSL) разработан — один из первых в Африке"},{"year":2018,"regime":"sandbox","confidence":"sourced","note":"RSL включён в бюджет 2018/19; SelfKey — первая лицензия (янв 2018). Страна позиционируется как блокчейн-хаб"},{"year":2019,"regime":"licensing","confidence":"sourced","note":"Financial Services (Custodian Services — Digital Asset) Rules 2019: FSC начинает лицензировать VASP с 2019"},{"year":2021,"regime":"licensing","confidence":"sourced","note":"Virtual Asset and Initial Token Offering Services Act (VAITOS)"},{"year":2022,"regime":"open","confidence":"sourced","note":"7 фев: VAITOS вступает в силу. Маврикий — первый в Африке режим с законом о токенизации"},{"year":2023,"regime":"open","confidence":"reported"},{"year":2024,"regime":"open","confidence":"reported"},{"year":2025,"regime":"open","confidence":"reported"},{"year":2026,"regime":"open","confidence":"reported"}],"metrics":{},"role":"оболочка (юрисдикция для регистрации)"},{"code":"SC","name":"Seychelles","ru":"Сейшелы","coords":[55.492,-4.6796],"hub_city":"Victoria","hub_coords":[55.4518,-4.6191],"timeline":[{"year":2014,"regime":"open","confidence":"sourced","note":"BitMEX (HDR Global Trading Ltd) зарегистрирован на Сейшелах по International Business Companies Act"},{"year":2015,"regime":"open","confidence":"reported"},{"year":2016,"regime":"open","confidence":"sourced","note":"BitMEX изобретает perpetual swap — инструмент становится глобальным стандартом"},{"year":2017,"regime":"open","confidence":"reported"},{"year":2018,"regime":"open","confidence":"reported"},{"year":2019,"regime":"open","confidence":"reported"},{"year":2020,"regime":"open","confidence":"reported"},{"year":2021,"regime":"open","confidence":"reported","note":"Обвинения против основателей BitMEX по Bank Secrecy Act (США)"},{"year":2022,"regime":"open","confidence":"reported"},{"year":2023,"regime":"open","confidence":"reported"},{"year":2024,"regime":"open","confidence":"sourced","note":"BitMEX признаёт вину по Bank Secrecy Act"},{"year":2025,"regime":"open","confidence":"reported"},{"year":2026,"regime":"open","confidence":"sourced","note":"BitMEX закрывает рынки 23 сентября 2026 после 11 лет"}],"metrics":{},"role":"оболочка (суверенитет на бумаге)"},{"code":"BW","name":"Botswana","ru":"Ботсвана","coords":[24.6849,-22.3285],"hub_city":"Gaborone","hub_coords":[25.908,-24.6282],"timeline":[{"year":2014,"regime":"restrictive","confidence":"sourced","note":"Satoshi Centre основан (Alakanani Itireleng) — один из первых образовательных крипто-центров Африки"},{"year":2019,"regime":"drafting","confidence":"reported"},{"year":2020,"regime":"drafting","confidence":"reported"},{"year":2021,"regime":"drafting","confidence":"reported"},{"year":2022,"regime":"licensing","confidence":"sourced","note":"Virtual Assets Act 2022 + Virtual Assets Regulations 2022. NBFIRA — регулятор. Один из первых в Африке"},{"year":2023,"regime":"licensing","confidence":"reported"},{"year":2024,"regime":"licensing","confidence":"reported"},{"year":2025,"regime":"open","confidence":"reported"},{"year":2026,"regime":"open","confidence":"sourced","note":"Крипто легально под NBFIRA VASP-лицензией; не законное платёжное средство"}],"metrics":{},"role":"ранний лицензиар"},{"code":"TZ","name":"Tanzania","ru":"Танзания","coords":[34.8888,-6.369],"hub_city":"Dar es Salaam","hub_coords":[39.2083,-6.7924],"timeline":[{"year":2019,"regime":"prohibitive","confidence":"sourced","note":"12 ноя: Bank of Tanzania публичное уведомление против виртуальных валют"},{"year":2020,"regime":"prohibitive","confidence":"reported"},{"year":2021,"regime":"prohibitive","confidence":"sourced","note":"Ноя: CBR предупреждает против крипто"},{"year":2022,"regime":"prohibitive","confidence":"reported"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"sourced","note":"Finance Act 2024: вводится withholding tax на цифровые активы с 1 июля 2024 — крипта признана налоговым объектом"},{"year":2025,"regime":"restrictive","confidence":"reported","note":"AML Act Cap. 423 распространён на VASP"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Управляющий BoT Эммануэль Тутуба объявляет о разработке формального регулирования крипто и стейблкоинов"}],"metrics":{},"role":"разворачивающийся (разворот 2019→2026)"},{"code":"MA","name":"Morocco","ru":"Марокко","coords":[-7.0926,31.7917],"hub_city":"Casablanca","hub_coords":[-7.5898,33.5731],"timeline":[{"year":2017,"regime":"prohibitive","confidence":"sourced","note":"Ноя: Office des Changes + Bank Al-Maghrib + Минэкономики — запрет крипто-транзакций, де-факто запрет"},{"year":2018,"regime":"prohibitive","confidence":"reported"},{"year":2019,"regime":"prohibitive","confidence":"reported"},{"year":2020,"regime":"prohibitive","confidence":"reported"},{"year":2021,"regime":"prohibitive","confidence":"reported"},{"year":2022,"regime":"prohibitive","confidence":"reported","note":"При этом Марокко входит в топ-20 по adoption — теневой рынок растёт"},{"year":2023,"regime":"prohibitive","confidence":"reported"},{"year":2024,"regime":"drafting","confidence":"sourced","note":"BAM готовит проект закона о крипто-активах"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Bill 42.25 внесён в парламент — исторический разворот; Марокко 24-е в мире по adoption (2025)"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Июль: BAM подтверждает прогресс по закону. Формально запрет 2017 ещё в силе — противоречие зафиксировано"}],"metrics":{"adoption_rank_2025":24},"role":"разворачивающийся (запрет при высоком adoption)"},{"code":"EG","name":"Egypt","ru":"Египет","coords":[30.8025,26.8206],"hub_city":"Cairo","hub_coords":[31.2357,30.0444],"timeline":[{"year":2020,"regime":"prohibitive","confidence":"sourced","note":"Закон о ЦБ № 194/2020, ст. 206 — прямой запрет выпуска, торговли, продвижения крипто; уголовная ответственность без одобрения CBE"},{"year":2021,"regime":"prohibitive","confidence":"reported"},{"year":2022,"regime":"prohibitive","confidence":"reported"},{"year":2023,"regime":"prohibitive","confidence":"reported"},{"year":2024,"regime":"prohibitive","confidence":"sourced","note":"Март: девальвация фунта (−40%), интерес к крипто растёт вопреки запрету"},{"year":2025,"regime":"prohibitive","confidence":"sourced","note":"Египет 26-й в мире по adoption — при действующем уголовном запрете"},{"year":2026,"regime":"prohibitive","confidence":"reported"}],"metrics":{"adoption_rank_2025":26},"role":"запрет при высоком adoption"},{"code":"ZW","name":"Zimbabwe","ru":"Зимбабве","coords":[29.1549,-19.0154],"hub_city":"Harare","hub_coords":[31.0522,-17.8252],"timeline":[{"year":2018,"regime":"prohibitive","confidence":"reported","note":"RBZ запрещает банкам обслуживать крипто-биржи"},{"year":2019,"regime":"prohibitive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"restrictive","confidence":"reported"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"sourced","note":"Апр: введён ZiG — золотообеспеченная национальная валюта (SI 60 of 2024)"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Finance Act No. 7 of 2025 вводит лицензирование крипто-бизнеса"},{"year":2026,"regime":"licensing","confidence":"sourced","note":"SI 99 of 2026 (10 июня): все компании с виртуальными активами обязаны регистрироваться и платить годовые сборы. Первый выделенный режим"}],"metrics":{},"role":"разворачивающийся (запрет → лицензирование)"},{"code":"ZM","name":"Zambia","ru":"Замбия","coords":[27.8493,-13.1339],"hub_city":"Lusaka","hub_coords":[28.3228,-15.3875],"timeline":[{"year":2024,"regime":"restrictive","confidence":"sourced","note":"BoZ Strategy 2024-2027 — первый формальный трек по цифровым активам"},{"year":2025,"regime":"restrictive","confidence":"reported"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"VASP обязаны регистрироваться в Bank of Zambia; выделенного закона ещё нет"}],"metrics":{},"role":"догоняющий"},{"code":"UG","name":"Uganda","ru":"Уганда","coords":[32.2903,1.3733],"hub_city":"Kampala","hub_coords":[32.5825,0.3476],"timeline":[{"year":2022,"regime":"restrictive","confidence":"reported","note":"Банк Уганды предупреждает против крипто"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"reported","note":"Kampala Blockchain Summit — отраслевой подъём"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Bank of Uganda представляет шестикомпонентный регуляторный блупринт для виртуальных активов на Kampala Blockchain Summit"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Пакет законов о виртуальных активах готовится. Лицензированным платёжным провайдерам запрещено обслуживать крипто"}],"metrics":{},"role":"догоняющий"},{"code":"SN","name":"Senegal","ru":"Сенегал","coords":[-14.4524,14.4974],"hub_city":"Dakar","hub_coords":[-17.4677,14.7167],"timeline":[{"year":2016,"regime":"restrictive","confidence":"reported","note":"BCEAO предупреждение по крипто в зоне UEMOA"},{"year":2018,"regime":"restrictive","confidence":"sourced","note":"Закон № 2018-03 (AML/CFT) — покрытие крипто через AML"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"restrictive","confidence":"reported","note":"BCEAO заявляет, что крипто не является законным платёжным средством в UEMOA"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"drafting","confidence":"reported","note":"BCEAO разрабатывает региональную рамку для крипто и стейблкоинов"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Выделенного законодательства нет; страна в рамках BCEAO"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Инструкция BCEAO № 008-05-2015 покрывает e-money; региональная рамка в разработке для всех 8 стран UEMOA"}],"metrics":{},"role":"регионально-зависимый (UEMOA/BCEAO)"},{"code":"CM","name":"Cameroon","ru":"Камерун","coords":[12.3547,7.3697],"hub_city":"Douala","hub_coords":[9.7679,4.0511],"timeline":[{"year":2019,"regime":"restrictive","confidence":"reported","note":"BEAC предупреждение по виртуальным активам в зоне CEMAC"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"prohibitive","confidence":"sourced","note":"Май: BEAC выпускает коммуникé CEMAC, запрещающее все операции с виртуальными активами"},{"year":2023,"regime":"prohibitive","confidence":"reported"},{"year":2024,"regime":"prohibitive","confidence":"reported"},{"year":2025,"regime":"prohibitive","confidence":"reported","note":"При этом P2P через мобильные деньги активен; лицензированных бирж нет"},{"year":2026,"regime":"restrictive","confidence":"sourced","note":"Де-факто запрет для бизнеса (только XAF законное средство), но владение для физлиц не криминализовано"}],"metrics":{},"role":"регионально-зависимый (CEMAC/BEAC), де-факто запрет"},{"code":"MZ","name":"Mozambique","ru":"Мозамбик","coords":[35.5296,-18.6657],"hub_city":"Maputo","hub_coords":[32.5732,-25.9692],"timeline":[{"year":2022,"regime":"restrictive","confidence":"reported","note":"Banco de Moçambique предупреждение"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"reported"},{"year":2025,"regime":"drafting","confidence":"reported"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Крипто легально к владению; провайдеры обязаны регистрироваться. Выделенного закона нет"}],"metrics":{},"role":"догоняющий"},{"code":"TN","name":"Tunisia","ru":"Тунис","coords":[9.5375,33.8869],"hub_city":"Tunis","hub_coords":[10.1815,36.8065],"timeline":[{"year":2018,"regime":"restrictive","confidence":"reported"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"restrictive","confidence":"reported","note":"BCT анонсирует изучение e-dinar"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"reported"},{"year":2025,"regime":"restrictive","confidence":"sourced","note":"52-е место в Global Crypto Adoption Index 2025"},{"year":2026,"regime":"restrictive","confidence":"reported"}],"metrics":{"adoption_rank_2025":52},"role":"осторожный наблюдатель"}],"external_hubs":[{"id":"EXT-DUBAI","name":"Dubai — DMCC Crypto Centre","ru":"Дубай","coords":[55.139,25.0755],"opened":2021,"role":"Капитал, лицензирование, релокация африканских основателей. 600+ крипто-компаний к 2024; 123 новых в 2023","role_type":"метрополия"},{"id":"EXT-SINGAPORE","name":"Singapore — MAS","ru":"Сингапур","coords":[103.8198,1.3521],"opened":2013,"role":"Образец лицензионной модели. Принял штаб-квартиру BitX/Luno (2015, $4M от Naspers)","role_type":"метрополия"},{"id":"EXT-HONGKONG","name":"Hong Kong","ru":"Гонконг","coords":[114.1694,22.3193],"opened":2025,"role":"Приёмник объёма после ужесточения Сингапура (2025)","role_type":"метрополия"},{"id":"EXT-ZURICH","name":"Zug / Crypto Valley (CV VC)","ru":"Цюрих/Цуг","coords":[8.5155,47.1662],"opened":2017,"role":"Производитель главного отчёта о «блокчейн-Африке» (CV VC + Absa, 5 выпусков)","role_type":"производитель дискурса"},{"id":"EXT-ADGM","name":"Abu Dhabi — ADGM","ru":"Абу-Даби","coords":[54.3213,24.5],"opened":2015,"role":"Лицензировал Venom Foundation, через который Кения строила блокчейн-хаб (MoU, 10 мая 2023)","role_type":"метрополия"}],"network_edges":[{"from":"EXT-ADGM","to":"KE","year":2023,"type":"partnership","label":"Venom Foundation (лицензия ADGM) ↔ правительство Кении: MoU о блокчейн-хабе в Найроби","confidence":"sourced","source":"wearetech.africa / coinspeaker"},{"from":"ZA","to":"EXT-SINGAPORE","year":2015,"type":"relocation","label":"BitX/Luno переносит штаб-квартиру в Сингапур после $4M от Naspers","confidence":"sourced","source":"ventureburn / mybroadband"},{"from":"NG","to":"EXT-DUBAI","year":2022,"type":"relocation","label":"Нигерийские основатели переоформляют компании в Дубай после бана CBN 2021","confidence":"reported","source":"отраслевые обзоры"},{"from":"EXT-SINGAPORE","to":"KE","year":2015,"type":"acquisition","label":"Австралийская биржа Igot приобретает кенийскую Tagpesa и входит на рынок [оператор из Азиатско-Тихоокеанского региона]","confidence":"sourced","source":"techcabal"},{"from":"EXT-DUBAI","to":"GH","year":2023,"type":"partnership","label":"Bybit × DMCC — экосистемное партнёрство, распространение на африканских разработчиков","confidence":"sourced","source":"African Leadership Magazine"},{"from":"EXT-ZURICH","to":"ZA","year":2025,"type":"funding","label":"CV VC + Absa: главный отчёт о блокчейн-Африке — швейцарский VC производит знание о континенте","confidence":"sourced","source":"CV VC / Absa Africa Blockchain Report"},{"from":"EXT-DUBAI","to":"NG","year":2025,"type":"funding","label":"Нигерия — 33% сделок в блокчейн-сфере Африки, при этом внешний капитал идёт через Залив","confidence":"reported","source":"techeconomy.ng / CV VC"},{"from":"SC","to":"GLOBAL","year":2014,"type":"registration","label":"BitMEX регистрируется на Сейшелах, операции — глобальные; Сейшелы не получают операционного следа","confidence":"sourced","source":"Wikipedia / cryptoeconomics"},{"from":"MU","to":"AFRICA","year":2018,"type":"registration","label":"Маврикий продаёт RSL-лицензии африканским и глобальным стартапам как шлюз на континент","confidence":"sourced","source":"afrivest.org / FSC Mauritius"},{"from":"CN","to":"ET","year":2025,"type":"mining","label":"Китайские операторы получают майнинг-мощности в Эфиопии (при запрете криптоплатежей)","confidence":"reported","source":"отраслевые обзоры"}]};
+const DATA = {"meta":{"title":"Zonal Sovereignty Atlas — Africa Crypto Regimes, 2013–2026","built":"2026-10-23","verification":"Демонстрационный корпус. Собран из открытых источников, НЕ верифицирован построчно по первоисточникам. См. поле confidence у каждой записи.","confidence_levels":{"sourced":"Есть конкретный источник (закон/регулятор/агентство), указан в source","reported":"Сообщено в медиа или отраслевом обзоре, первоисточник не сверен","needs_check":"Требует проверки — противоречие между источниками или неясная дата"},"regimes":{"prohibitive":{"label":"Запрет","color":"#b3202c","desc":"Прямой запрет или уголовная ответственность"},"restrictive":{"label":"Ограничительный","color":"#d97706","desc":"Банкам запрещено, владение не запрещено; двойной режим"},"drafting":{"label":"Проект/переход","color":"#eab308","desc":"Закон в разработке или принят без работающего лицензирования"},"sandbox":{"label":"Песочница","color":"#84cc16","desc":"Регуляторная песочница / инкубация"},"licensing":{"label":"Лицензирование","color":"#16a34a","desc":"Работающая система лицензий"},"open":{"label":"Открытый","color":"#0d9488","desc":"Лицензирование работает, рынок развит"}},"event_types":{"product":"Первый работающий рыночный продукт","institution":"Хаб, ассоциация, акселератор, сообщество","law":"Регуляторный акт","partnership":"Межгосударственное или корпоративное соглашение","funding":"Инвестиционный или отчётный сигнал"}},"countries":[{"code":"NG","name":"Nigeria","ru":"Нигерия","coords":[8.6753,9.082],"hub_city":"Lagos","hub_coords":[3.3792,6.5244],"timeline":[{"year":2014,"regime":"restrictive","confidence":"reported"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"restrictive","confidence":"reported"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"prohibitive","confidence":"sourced","note":"5 фев: циркуляр CBN — банкам запрещено обслуживать крипто-биржи"},{"year":2022,"regime":"prohibitive","confidence":"sourced"},{"year":2023,"regime":"drafting","confidence":"sourced","note":"Дек: CBN снимает запрет на банковские операции; ISA 2023 относит цифровые активы к ценным бумагам"},{"year":2024,"regime":"sandbox","confidence":"sourced","note":"Авг: SEC запускает ARIP — первая когорта площадок в песочнице"},{"year":2025,"regime":"licensing","confidence":"sourced","note":"ISA 2025: все биржи обязаны иметь лицензию SEC. Quidax, Busha — первые лицензии"},{"year":2026,"regime":"licensing","confidence":"reported"}],"metrics":{"adoption_rank_2025":2,"onchain_value_2025_usd_bn":92.1,"vc_share_deals_pct":33},"role":"источник, отдающий вовне"},{"code":"KE","name":"Kenya","ru":"Кения","coords":[37.9062,-0.0236],"hub_city":"Nairobi","hub_coords":[36.8219,-1.2921],"timeline":[{"year":2013,"regime":"restrictive","confidence":"sourced","note":"9 июля: Kipochi — первый крипто-продукт в Африке (биткоин-кошелёк + M-Pesa)"},{"year":2014,"regime":"restrictive","confidence":"reported"},{"year":2015,"regime":"restrictive","confidence":"sourced","note":"CBK предупреждение о виртуальных валютах"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"restrictive","confidence":"reported","note":"CBK запрещает банкам обслуживать крипто (циркуляр)"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"drafting","confidence":"reported","note":"Проект политики по цифровым активам; CMA получает мандат"},{"year":2023,"regime":"drafting","confidence":"sourced","note":"Май: партнёрство с Venom Foundation (ADGM, Абу-Даби) — строительство блокчейн-хаба в Найроби"},{"year":2024,"regime":"drafting","confidence":"reported"},{"year":2025,"regime":"licensing","confidence":"sourced","note":"4 апр внесён VASP Bill; 13 окт принят парламентом; 15 окт assent; вступил 4 ноя 2025"},{"year":2026,"regime":"licensing","confidence":"sourced","note":"17 мар: проект регламентов; 24 июл: регламенты опубликованы (CBK — платежи/стейблкоины, CMA — биржи). Лицензии ещё не выданы"}],"metrics":{"adoption_rank_2025":10,"vc_share_deals_pct":13},"role":"посредник"},{"code":"ZA","name":"South Africa","ru":"ЮАР","coords":[22.9375,-30.5595],"hub_city":"Cape Town","hub_coords":[18.4241,-33.9249],"timeline":[{"year":2013,"regime":"restrictive","confidence":"sourced","note":"BitX основан в Стелленбоше (позже Luno)"},{"year":2014,"regime":"restrictive","confidence":"reported","note":"SARB публичное предупреждение, но без запрета"},{"year":2015,"regime":"restrictive","confidence":"sourced","note":"BitX привлекает $4 млн от Naspers; штаб-квартира → Сингапур"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"sandbox","confidence":"reported","note":"SARB запускает межбанковский проект Project Khokha"},{"year":2019,"regime":"sandbox","confidence":"sourced","note":"IFWG Crypto Asset Regulatory Working Group — первый официальный регуляторный трек"},{"year":2020,"regime":"sandbox","confidence":"reported"},{"year":2021,"regime":"sandbox","confidence":"reported"},{"year":2022,"regime":"drafting","confidence":"sourced","note":"19 окт: FSCA объявляет крипто-активы финансовым продуктом по FAIS"},{"year":2023,"regime":"licensing","confidence":"sourced","note":"1 июн: FSCA открывает лицензирование CASP. Первая работающая система лицензий в Африке"},{"year":2024,"regime":"open","confidence":"sourced","note":"На 10 дек: 248 заявок, 248 рассмотрено, лицензии выдаются. Крупнейший формальный крипто-рынок Африки"},{"year":2025,"regime":"open","confidence":"sourced","note":"~300 из 512 заявок одобрено; 81 расследование по нелицензированной деятельности"},{"year":2026,"regime":"open","confidence":"reported","note":"Открытие национальной платёжной системы для небанковских участников"}],"metrics":{"vc_share_funding_pct":18},"role":"метрополия (региональная)"},{"code":"GH","name":"Ghana","ru":"Гана","coords":[-1.0232,7.9465],"hub_city":"Accra","hub_coords":[-0.187,5.6037],"timeline":[{"year":2013,"regime":"restrictive","confidence":"reported"},{"year":2014,"regime":"restrictive","confidence":"reported"},{"year":2015,"regime":"restrictive","confidence":"reported"},{"year":2016,"regime":"restrictive","confidence":"reported"},{"year":2017,"regime":"restrictive","confidence":"reported"},{"year":2018,"regime":"restrictive","confidence":"sourced","note":"BoG предупреждение против крипто"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported","note":"BoG анонсирует планы по eCedi (CBDC)"},{"year":2022,"regime":"restrictive","confidence":"reported"},{"year":2023,"regime":"drafting","confidence":"sourced","note":"Проект VASP Bill внесён; публичные консультации"},{"year":2024,"regime":"drafting","confidence":"reported"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Принят Virtual Asset Service Providers Act, 2025 (Act 1154). BoG создаёт полноценный департамент, но лицензии ещё не выдаются"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Авг: BoG заявляет о полной операционализации к 2027. На дек 2026 — окна лицензирования всё ещё нет"}],"metrics":{},"role":"ожидающий (закон есть, рынка нет)"},{"code":"RW","name":"Rwanda","ru":"Руанда","coords":[29.8739,-1.9403],"hub_city":"Kigali","hub_coords":[30.0619,-1.9441],"timeline":[{"year":2018,"regime":"restrictive","confidence":"reported","note":"NBR предупреждает против крипто"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"drafting","confidence":"reported","note":"NBR исследует CBDC; Национальный банк изучает цифровой франк"},{"year":2022,"regime":"sandbox","confidence":"sourced","note":"RDB/BNR запускают регуляторную песочницу для финтеха"},{"year":2023,"regime":"sandbox","confidence":"sourced","note":"Virtual Assets Policy 2023 — первая официальная политика"},{"year":2024,"regime":"sandbox","confidence":"reported"},{"year":2025,"regime":"drafting","confidence":"reported","note":"Законопроект о виртуальных активах в разработке"},{"year":2026,"regime":"licensing","confidence":"sourced","note":"5 мая: парламент принимает закон о виртуальных активах 69-0; Закон № 023/2026 от 25 мая, опубликован в Gazette 28 мая, вступил в силу. CMA — регулятор, NBR — со-координатор"}],"metrics":{},"role":"посредник (стратегия государства)"},{"code":"ET","name":"Ethiopia","ru":"Эфиопия","coords":[40.4897,9.145],"hub_city":"Addis Ababa","hub_coords":[38.7469,9.025],"timeline":[{"year":2022,"regime":"drafting","confidence":"reported","note":"Майнинг биткоина начинает допускаться на государственные энергомощности"},{"year":2023,"regime":"restrictive","confidence":"sourced","note":"Proclamation No. 1282/2023 — поправка к платёжным системам"},{"year":2024,"regime":"restrictive","confidence":"sourced","note":"Proclamation No. 1359/2024 — криптоплатежи прямо запрещены; NBE получает мандат. НО майнинг лицензируется"},{"year":2025,"regime":"restrictive","confidence":"reported","note":"Тендеры на майнинг-мощности для иностранных операторов (в т.ч. из Китая)"},{"year":2026,"regime":"restrictive","confidence":"sourced","note":"Фев: публичное уведомление NBE против P2P-операций с привязкой к быру. Двойной режим зафиксирован окончательно"}],"metrics":{},"role":"двойной режим (запрет платежей + лицензированный майнинг)"},{"code":"MU","name":"Mauritius","ru":"Маврикий","coords":[57.5522,-20.3484],"hub_city":"Port Louis","hub_coords":[57.5012,-20.1654],"timeline":[{"year":2016,"regime":"sandbox","confidence":"sourced","note":"Regulatory Sandbox Licence (RSL) разработан — один из первых в Африке"},{"year":2018,"regime":"sandbox","confidence":"sourced","note":"RSL включён в бюджет 2018/19; SelfKey — первая лицензия (янв 2018). Страна позиционируется как блокчейн-хаб"},{"year":2019,"regime":"licensing","confidence":"sourced","note":"Financial Services (Custodian Services — Digital Asset) Rules 2019: FSC начинает лицензировать VASP с 2019"},{"year":2021,"regime":"licensing","confidence":"sourced","note":"Virtual Asset and Initial Token Offering Services Act (VAITOS)"},{"year":2022,"regime":"open","confidence":"sourced","note":"7 фев: VAITOS вступает в силу. Маврикий — первый в Африке режим с законом о токенизации"},{"year":2023,"regime":"open","confidence":"reported"},{"year":2024,"regime":"open","confidence":"reported"},{"year":2025,"regime":"open","confidence":"reported"},{"year":2026,"regime":"open","confidence":"reported"}],"metrics":{},"role":"оболочка (юрисдикция для регистрации)"},{"code":"SC","name":"Seychelles","ru":"Сейшелы","coords":[55.492,-4.6796],"hub_city":"Victoria","hub_coords":[55.4518,-4.6191],"timeline":[{"year":2014,"regime":"open","confidence":"sourced","note":"BitMEX (HDR Global Trading Ltd) зарегистрирован на Сейшелах по International Business Companies Act"},{"year":2015,"regime":"open","confidence":"reported"},{"year":2016,"regime":"open","confidence":"sourced","note":"BitMEX изобретает perpetual swap — инструмент становится глобальным стандартом"},{"year":2017,"regime":"open","confidence":"reported"},{"year":2018,"regime":"open","confidence":"reported"},{"year":2019,"regime":"open","confidence":"reported"},{"year":2020,"regime":"open","confidence":"reported"},{"year":2021,"regime":"open","confidence":"reported","note":"Обвинения против основателей BitMEX по Bank Secrecy Act (США)"},{"year":2022,"regime":"open","confidence":"reported"},{"year":2023,"regime":"open","confidence":"reported"},{"year":2024,"regime":"open","confidence":"sourced","note":"BitMEX признаёт вину по Bank Secrecy Act"},{"year":2025,"regime":"open","confidence":"reported"},{"year":2026,"regime":"open","confidence":"sourced","note":"BitMEX закрывает рынки 23 сентября 2026 после 11 лет"}],"metrics":{},"role":"оболочка (суверенитет на бумаге)"},{"code":"BW","name":"Botswana","ru":"Ботсвана","coords":[24.6849,-22.3285],"hub_city":"Gaborone","hub_coords":[25.908,-24.6282],"timeline":[{"year":2014,"regime":"restrictive","confidence":"sourced","note":"Satoshi Centre основан (Alakanani Itireleng) — один из первых образовательных крипто-центров Африки"},{"year":2019,"regime":"drafting","confidence":"reported"},{"year":2020,"regime":"drafting","confidence":"reported"},{"year":2021,"regime":"drafting","confidence":"reported"},{"year":2022,"regime":"licensing","confidence":"sourced","note":"Virtual Assets Act 2022 + Virtual Assets Regulations 2022. NBFIRA — регулятор. Один из первых в Африке"},{"year":2023,"regime":"licensing","confidence":"reported"},{"year":2024,"regime":"licensing","confidence":"reported"},{"year":2025,"regime":"open","confidence":"reported"},{"year":2026,"regime":"open","confidence":"sourced","note":"Крипто легально под NBFIRA VASP-лицензией; не законное платёжное средство"}],"metrics":{},"role":"ранний лицензиар"},{"code":"TZ","name":"Tanzania","ru":"Танзания","coords":[34.8888,-6.369],"hub_city":"Dar es Salaam","hub_coords":[39.2083,-6.7924],"timeline":[{"year":2019,"regime":"prohibitive","confidence":"sourced","note":"12 ноя: Bank of Tanzania публичное уведомление против виртуальных валют"},{"year":2020,"regime":"prohibitive","confidence":"reported"},{"year":2021,"regime":"prohibitive","confidence":"sourced","note":"Ноя: CBR предупреждает против крипто"},{"year":2022,"regime":"prohibitive","confidence":"reported"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"sourced","note":"Finance Act 2024: вводится withholding tax на цифровые активы с 1 июля 2024 — крипта признана налоговым объектом"},{"year":2025,"regime":"restrictive","confidence":"reported","note":"AML Act Cap. 423 распространён на VASP"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Управляющий BoT Эммануэль Тутуба объявляет о разработке формального регулирования крипто и стейблкоинов"}],"metrics":{},"role":"разворачивающийся (разворот 2019→2026)"},{"code":"MA","name":"Morocco","ru":"Марокко","coords":[-7.0926,31.7917],"hub_city":"Casablanca","hub_coords":[-7.5898,33.5731],"timeline":[{"year":2017,"regime":"prohibitive","confidence":"sourced","note":"Ноя: Office des Changes + Bank Al-Maghrib + Минэкономики — запрет крипто-транзакций, де-факто запрет"},{"year":2018,"regime":"prohibitive","confidence":"reported"},{"year":2019,"regime":"prohibitive","confidence":"reported"},{"year":2020,"regime":"prohibitive","confidence":"reported"},{"year":2021,"regime":"prohibitive","confidence":"reported"},{"year":2022,"regime":"prohibitive","confidence":"reported","note":"При этом Марокко входит в топ-20 по adoption — теневой рынок растёт"},{"year":2023,"regime":"prohibitive","confidence":"reported"},{"year":2024,"regime":"drafting","confidence":"sourced","note":"BAM готовит проект закона о крипто-активах"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Bill 42.25 внесён в парламент — исторический разворот; Марокко 24-е в мире по adoption (2025)"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Июль: BAM подтверждает прогресс по закону. Формально запрет 2017 ещё в силе — противоречие зафиксировано"}],"metrics":{"adoption_rank_2025":24},"role":"разворачивающийся (запрет при высоком adoption)"},{"code":"EG","name":"Egypt","ru":"Египет","coords":[30.8025,26.8206],"hub_city":"Cairo","hub_coords":[31.2357,30.0444],"timeline":[{"year":2020,"regime":"prohibitive","confidence":"sourced","note":"Закон о ЦБ № 194/2020, ст. 206 — прямой запрет выпуска, торговли, продвижения крипто; уголовная ответственность без одобрения CBE"},{"year":2021,"regime":"prohibitive","confidence":"reported"},{"year":2022,"regime":"prohibitive","confidence":"reported"},{"year":2023,"regime":"prohibitive","confidence":"reported"},{"year":2024,"regime":"prohibitive","confidence":"sourced","note":"Март: девальвация фунта (−40%), интерес к крипто растёт вопреки запрету"},{"year":2025,"regime":"prohibitive","confidence":"sourced","note":"Египет 26-й в мире по adoption — при действующем уголовном запрете"},{"year":2026,"regime":"prohibitive","confidence":"reported"}],"metrics":{"adoption_rank_2025":26},"role":"запрет при высоком adoption"},{"code":"ZW","name":"Zimbabwe","ru":"Зимбабве","coords":[29.1549,-19.0154],"hub_city":"Harare","hub_coords":[31.0522,-17.8252],"timeline":[{"year":2018,"regime":"prohibitive","confidence":"reported","note":"RBZ запрещает банкам обслуживать крипто-биржи"},{"year":2019,"regime":"prohibitive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"restrictive","confidence":"reported"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"sourced","note":"Апр: введён ZiG — золотообеспеченная национальная валюта (SI 60 of 2024)"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Finance Act No. 7 of 2025 вводит лицензирование крипто-бизнеса"},{"year":2026,"regime":"licensing","confidence":"sourced","note":"SI 99 of 2026 (10 июня): все компании с виртуальными активами обязаны регистрироваться и платить годовые сборы. Первый выделенный режим"}],"metrics":{},"role":"разворачивающийся (запрет → лицензирование)"},{"code":"ZM","name":"Zambia","ru":"Замбия","coords":[27.8493,-13.1339],"hub_city":"Lusaka","hub_coords":[28.3228,-15.3875],"timeline":[{"year":2024,"regime":"restrictive","confidence":"sourced","note":"BoZ Strategy 2024-2027 — первый формальный трек по цифровым активам"},{"year":2025,"regime":"restrictive","confidence":"reported"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"VASP обязаны регистрироваться в Bank of Zambia; выделенного закона ещё нет"}],"metrics":{},"role":"догоняющий"},{"code":"UG","name":"Uganda","ru":"Уганда","coords":[32.2903,1.3733],"hub_city":"Kampala","hub_coords":[32.5825,0.3476],"timeline":[{"year":2022,"regime":"restrictive","confidence":"reported","note":"Банк Уганды предупреждает против крипто"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"reported","note":"Kampala Blockchain Summit — отраслевой подъём"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Bank of Uganda представляет шестикомпонентный регуляторный блупринт для виртуальных активов на Kampala Blockchain Summit"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Пакет законов о виртуальных активах готовится. Лицензированным платёжным провайдерам запрещено обслуживать крипто"}],"metrics":{},"role":"догоняющий"},{"code":"SN","name":"Senegal","ru":"Сенегал","coords":[-14.4524,14.4974],"hub_city":"Dakar","hub_coords":[-17.4677,14.7167],"timeline":[{"year":2016,"regime":"restrictive","confidence":"reported","note":"BCEAO предупреждение по крипто в зоне UEMOA"},{"year":2018,"regime":"restrictive","confidence":"sourced","note":"Закон № 2018-03 (AML/CFT) — покрытие крипто через AML"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"restrictive","confidence":"reported","note":"BCEAO заявляет, что крипто не является законным платёжным средством в UEMOA"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"drafting","confidence":"reported","note":"BCEAO разрабатывает региональную рамку для крипто и стейблкоинов"},{"year":2025,"regime":"drafting","confidence":"sourced","note":"Выделенного законодательства нет; страна в рамках BCEAO"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Инструкция BCEAO № 008-05-2015 покрывает e-money; региональная рамка в разработке для всех 8 стран UEMOA"}],"metrics":{},"role":"регионально-зависимый (UEMOA/BCEAO)"},{"code":"CM","name":"Cameroon","ru":"Камерун","coords":[12.3547,7.3697],"hub_city":"Douala","hub_coords":[9.7679,4.0511],"timeline":[{"year":2019,"regime":"restrictive","confidence":"reported","note":"BEAC предупреждение по виртуальным активам в зоне CEMAC"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"prohibitive","confidence":"sourced","note":"Май: BEAC выпускает коммуникé CEMAC, запрещающее все операции с виртуальными активами"},{"year":2023,"regime":"prohibitive","confidence":"reported"},{"year":2024,"regime":"prohibitive","confidence":"reported"},{"year":2025,"regime":"prohibitive","confidence":"reported","note":"При этом P2P через мобильные деньги активен; лицензированных бирж нет"},{"year":2026,"regime":"restrictive","confidence":"sourced","note":"Де-факто запрет для бизнеса (только XAF законное средство), но владение для физлиц не криминализовано"}],"metrics":{},"role":"регионально-зависимый (CEMAC/BEAC), де-факто запрет"},{"code":"MZ","name":"Mozambique","ru":"Мозамбик","coords":[35.5296,-18.6657],"hub_city":"Maputo","hub_coords":[32.5732,-25.9692],"timeline":[{"year":2022,"regime":"restrictive","confidence":"reported","note":"Banco de Moçambique предупреждение"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"reported"},{"year":2025,"regime":"drafting","confidence":"reported"},{"year":2026,"regime":"drafting","confidence":"sourced","note":"Крипто легально к владению; провайдеры обязаны регистрироваться. Выделенного закона нет"}],"metrics":{},"role":"догоняющий"},{"code":"TN","name":"Tunisia","ru":"Тунис","coords":[9.5375,33.8869],"hub_city":"Tunis","hub_coords":[10.1815,36.8065],"timeline":[{"year":2018,"regime":"restrictive","confidence":"reported"},{"year":2019,"regime":"restrictive","confidence":"reported"},{"year":2020,"regime":"restrictive","confidence":"reported"},{"year":2021,"regime":"restrictive","confidence":"reported"},{"year":2022,"regime":"restrictive","confidence":"reported","note":"BCT анонсирует изучение e-dinar"},{"year":2023,"regime":"restrictive","confidence":"reported"},{"year":2024,"regime":"restrictive","confidence":"reported"},{"year":2025,"regime":"restrictive","confidence":"sourced","note":"52-е место в Global Crypto Adoption Index 2025"},{"year":2026,"regime":"restrictive","confidence":"reported"}],"metrics":{"adoption_rank_2025":52},"role":"осторожный наблюдатель"}],"external_hubs":[{"id":"EXT-DUBAI","name":"Dubai — DMCC Crypto Centre","ru":"Дубай","coords":[55.2708,25.2048],"opened":2021,"role":"Капитал, лицензирование, релокация африканских основателей. 600+ крипто-компаний к 2024; 123 новых в 2023","role_type":"метрополия"},{"id":"EXT-SINGAPORE","name":"Singapore — MAS","ru":"Сингапур","coords":[103.8198,1.3521],"opened":2013,"role":"Образец лицензионной модели. Принял штаб-квартиру BitX/Luno (2015, $4M от Naspers)","role_type":"метрополия"},{"id":"EXT-HONGKONG","name":"Hong Kong","ru":"Гонконг","coords":[114.1095,22.3964],"opened":2025,"role":"Приёмник объёма после ужесточения Сингапура (2025)","role_type":"метрополия"},{"id":"EXT-ZURICH","name":"Zurich — Crypto Valley (CV VC)","ru":"Цюрих","coords":[8.5417,47.3769],"opened":2017,"role":"Производитель главного отчёта о «блокчейн-Африке» (CV VC + Absa, 5 выпусков)","role_type":"производитель дискурса"},{"id":"EXT-ADGM","name":"Abu Dhabi — ADGM","ru":"Абу-Даби","coords":[54.3773,24.4539],"opened":2015,"role":"Лицензировал Venom Foundation, через который Кения строила блокчейн-хаб (MoU, 10 мая 2023)","role_type":"метрополия"}],"network_edges":[{"from":"EXT-ADGM","to":"KE","year":2023,"type":"partnership","label":"Venom Foundation (лицензия ADGM) ↔ правительство Кении: MoU о блокчейн-хабе в Найроби","confidence":"sourced","source":"wearetech.africa / coinspeaker"},{"from":"ZA","to":"EXT-SINGAPORE","year":2015,"type":"relocation","label":"BitX/Luno переносит штаб-квартиру в Сингапур после $4M от Naspers","confidence":"sourced","source":"ventureburn / mybroadband"},{"from":"NG","to":"EXT-DUBAI","year":2022,"type":"relocation","label":"Нигерийские основатели переоформляют компании в Дубай после бана CBN 2021","confidence":"reported","source":"отраслевые обзоры"},{"from":"EXT-SINGAPORE","to":"KE","year":2015,"type":"acquisition","label":"Австралийская биржа Igot приобретает кенийскую Tagpesa и входит на рынок [оператор из Азиатско-Тихоокеанского региона]","confidence":"sourced","source":"techcabal"},{"from":"EXT-DUBAI","to":"GH","year":2023,"type":"partnership","label":"Bybit × DMCC — экосистемное партнёрство, распространение на африканских разработчиков","confidence":"sourced","source":"African Leadership Magazine"},{"from":"EXT-ZURICH","to":"ZA","year":2025,"type":"funding","label":"CV VC + Absa: главный отчёт о блокчейн-Африке — швейцарский VC производит знание о континенте","confidence":"sourced","source":"CV VC / Absa Africa Blockchain Report"},{"from":"EXT-DUBAI","to":"NG","year":2025,"type":"funding","label":"Нигерия — 33% сделок в блокчейн-сфере Африки, при этом внешний капитал идёт через Залив","confidence":"reported","source":"techeconomy.ng / CV VC"},{"from":"SC","to":"GLOBAL","year":2014,"type":"registration","label":"BitMEX регистрируется на Сейшелах, операции — глобальные; Сейшелы не получают операционного следа","confidence":"sourced","source":"Wikipedia / cryptoeconomics"},{"from":"MU","to":"AFRICA","year":2018,"type":"registration","label":"Маврикий продаёт RSL-лицензии африканским и глобальным стартапам как шлюз на континент","confidence":"sourced","source":"afrivest.org / FSC Mauritius"},{"from":"CN","to":"ET","year":2025,"type":"mining","label":"Китайские операторы получают майнинг-мощности в Эфиопии (при запрете криптоплатежей)","confidence":"reported","source":"отраслевые обзоры"}]};
 const REGIMES = DATA.meta.regimes;
 const YEARS = Array.from({length:2026-2013+1},(_,i)=>2013+i);
 const byCode = Object.fromEntries(DATA.countries.map(c=>[c.code,c]));
-const ROLE_EN = {"источник, отдающий вовне":"Источник (отдаёт вовне)","посредник":"Посредник","метрополия (региональная)":"Региональная метрополия","ожидающий (закон есть, рынка нет)":"Ожидающий","оболочка":"Оболочка","двойной режим (запрет платежей + лицензированный майнинг)":"Двойной режим","ранний лицензиар":"Ранний лицензиар","разворачивающийся (разворот 2019→2026)":"Разворот 2019→2026","разворачивающийся (запрет при высоком adoption)":"Разворот при высоком adoption","запрет при высоком adoption":"Запрет при высоком adoption","разворачивающийся (запрет → лицензирование)":"Разворот: запрет → лицензия","догоняющий":"Догоняющий","регионально-зависимый (UEMOA/BCEAO)":"Регионально зависимый (UEMOA)","регионально-зависимый (CEMAC/BEAC), де-факто запрет":"Регионально зависимый (CEMAC)","осторожный наблюдатель":"Наблюдатель"};
 
 function regimeAt(c,year){ let best=null; for(const t of c.timeline){ if(t.year<=year) best=t; } return best; }
 function regimeClass(c,year){
-  const t = regimeAt(c,year);
-  if(!t) return {key:'none',color:'#182230',label:'Нет данных'};
+  const t=regimeAt(c,year);
+  if(!t) return {key:'none',color:'#e7e7e1',label:'Нет данных'};
   return {key:t.regime,color:REGIMES[t.regime].color,label:REGIMES[t.regime].label,note:t.note,year:t.year,conf:t.confidence};
 }
 
-/* Проекция: Африка в левой-центральной части, внешние узлы — в кадре справа/вверху.
-   Это устраняет главный дефект прошлой версии: рёбра уходили за пределы SVG. */
-const proj = d3.geoMercator().center([20,4]).scale(340).translate([465,398]);
+/* Проекция. Центр [30,8] и масштаб 305 подобраны так, чтобы:
+   — Африка занимала основную площадь,
+   — Цюрих (47N) и Сингапур (104E) оставались в кадре,
+   — Индийский океан не «съедал» правую треть. */
+const proj = d3.geoMercator().center([32,6]).scale(330).translate([520,370]);
 const path = d3.geoPath(proj);
 const pt = c => proj(c);
 
 const svg = d3.select('#map');
-const gLand = svg.append('g'), gEdges = svg.append('g'), gCountries = svg.append('g');
-const gDots = svg.append('g'), gLabels = svg.append('g');
-
-let netOn = true;
-let allNodes = {};
-let ABSTRACT = [];
+const gLand=svg.append('g'), gEdges=svg.append('g'), gCountries=svg.append('g');
+const gDots=svg.append('g'), gLabels=svg.append('g');
+let netOn=true, allNodes={}, ABSTRACT=[];
 
 fetch('countries-110m.json').then(r=>r.json()).then(topo=>{
-  const feats = topojson.feature(topo, topo.objects.countries).features;
-  const ISO_NUM = {NG:'566',KE:'404',ZA:'710',GH:'288',RW:'646',ET:'231',TZ:'834',MA:'504',EG:'818',ZW:'716',ZM:'894',UG:'800',SN:'686',CM:'120',MZ:'508',TN:'788',BW:'72'};
-  const numToCode = Object.fromEntries(Object.entries(ISO_NUM).map(([k,v])=>[String(Number(v)),k]));
-  const afr = feats.filter(f=> numToCode[String(Number(f.id))]);
+  const feats=topojson.feature(topo,topo.objects.countries).features;
+  const ISO_NUM={NG:'566',KE:'404',ZA:'710',GH:'288',RW:'646',ET:'231',TZ:'834',MA:'504',EG:'818',ZW:'716',ZM:'894',UG:'800',SN:'686',CM:'120',MZ:'508',TN:'788',BW:'72'};
+  const numToCode=Object.fromEntries(Object.entries(ISO_NUM).map(([k,v])=>[String(Number(v)),k]));
+  const afr=feats.filter(f=>numToCode[String(Number(f.id))]);
 
   gLand.selectAll('path').data(feats).join('path').attr('class','land').attr('d',path);
-
   gCountries.selectAll('path').data(afr).join('path')
     .attr('class','country').attr('data-code',f=>numToCode[String(Number(f.id))])
     .attr('d',path).on('click',(e,f)=>selectCountry(numToCode[String(Number(f.id))]));
 
   ['MU','SC'].forEach(code=>{
-    const c = byCode[code]; if(!c) return;
-    const p = pt(c.hub_coords);
+    const c=byCode[code]; if(!c) return;
+    const p=pt(c.hub_coords);
     gCountries.append('circle').attr('class','country').attr('data-code',code)
-      .attr('cx',p[0]).attr('cy',p[1]).attr('r',6.5).attr('stroke','#24303d').attr('stroke-width',.6)
+      .attr('cx',p[0]).attr('cy',p[1]).attr('r',5).attr('stroke','#b9b9b1').attr('stroke-width',.6)
       .style('cursor','pointer').on('click',()=>selectCountry(code));
   });
 
-  allNodes = {};
+  allNodes={};
   DATA.countries.forEach(c=>allNodes[c.code]=c.hub_coords);
   DATA.external_hubs.forEach(h=>allNodes[h.id]=h.coords);
-  // абстрактные узлы графа: глобальный рынок, континент в целом, Китай
   allNodes['GLOBAL']=[14,-44]; allNodes['AFRICA']=[22,-2]; allNodes['CN']=[104,35];
-  ABSTRACT = [
-    {id:'CN', ru:'Китай', coords:allNodes['CN']},
-    {id:'GLOBAL', ru:'Мировой рынок', coords:allNodes['GLOBAL']},
-    {id:'AFRICA', ru:'Континент (агрегат)', coords:allNodes['AFRICA']}
-  ];
+  ABSTRACT=[{id:'CN',ru:'Китай',coords:allNodes['CN']},
+            {id:'GLOBAL',ru:'Мировой рынок',coords:allNodes['GLOBAL']},
+            {id:'AFRICA',ru:'Континент (агрегат)',coords:allNodes['AFRICA']}];
 
-  drawNetwork();
-  paint(2026);
-}).catch(err=>{
-  console.error(err);
-  d3.select('#map').node().insertAdjacentHTML('afterend',
-    '<p style="padding:14px;color:#e05263;font-size:13px">Не удалось загрузить геометрию стран. Открой через HTTP-сервер.</p>');
+  drawNetwork(); paint(2026);
+}).catch(e=>{
+  console.error(e);
+  d3.select('#map').node().insertAdjacentHTML('afterend','<p style="padding:16px;color:#a51c0a;font-size:13px">Не удалось загрузить геометрию мира. Открой страницу через HTTP-сервер.</p>');
 });
 
 function drawNetwork(){
-  const g = gEdges.selectAll('g').data(DATA.network_edges).join('g');
+  const g=gEdges.selectAll('g').data(DATA.network_edges).join('g');
   g.append('path').attr('class','edgehit');
   g.append('path').attr('class',d=>{
-      const t=d.type;
-      return 'edge '+(t==='registration'?'reg':t==='partnership'?'par':t==='funding'?'fund':'rel');
-    });
+    const t=d.type;
+    return 'edge '+(t==='registration'?'reg':t==='partnership'?'par':t==='funding'?'fund':'rel');
+  });
   g.each(function(d){
     const a=allNodes[d.from], b=allNodes[d.to];
     if(!a||!b){ d3.select(this).style('display','none'); return; }
-    const p1=pt(a), p2=pt(b);
-    const mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2;
-    let nx=-(p2[1]-p1[1]), ny=(p2[0]-p1[0]);
-    const len=Math.hypot(nx,ny)||1;
-    const off=Math.min(60, len*0.14);
-    const cx=mx+nx/len*off, cy=my+ny/len*off;
-    d3.select(this).selectAll('path').attr('d',`M${p1[0]},${p1[1]} Q${cx},${cy} ${p2[0]},${p2[1]}`);
+    const p1=pt(a),p2=pt(b);
+    const mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;
+    let nx=-(p2[1]-p1[1]),ny=(p2[0]-p1[0]);
+    const len=Math.hypot(nx,ny)||1, off=Math.min(55,len*0.13);
+    d3.select(this).selectAll('path').attr('d',`M${p1[0]},${p1[1]} Q${mx+nx/len*off},${my+ny/len*off} ${p2[0]},${p2[1]}`);
     d3.select(this).append('title').text(`${d.year} · ${d.label}`);
   });
 }
 
-function paint(year){
-  document.getElementById('bigyear').textContent = year;
-  document.getElementById('mapyear').textContent = year;
-  document.getElementById('sideyear').textContent = year;
-  document.getElementById('slider').value = year;
+/* смещения подписей для плотных кластеров */
+const LBL={GH:[7,13],NG:[-8,-7],RW:[9,-4],UG:[-9,-4],KE:[9,10],BW:[-9,11],ZA:[9,13],TZ:[9,3],ET:[9,-2]};
 
-  gCountries.selectAll('.country').transition().duration(420)
-    .attr('fill', function(){
+function paint(year){
+  document.getElementById('ybig').textContent=year;
+  document.getElementById('sy').textContent=year;
+  document.getElementById('slider').value=year;
+
+  gCountries.selectAll('.country').transition().duration(400)
+    .attr('fill',function(){
       const code=this.getAttribute('data-code');
-      const c=byCode[code]; if(!c) return '#182230';
+      const c=byCode[code]; if(!c) return '#e7e7e1';
       return regimeClass(c,year).color;
     });
 
-  const visible = DATA.countries.filter(c=>Math.min(...c.timeline.map(t=>t.year))<=year);
-  gDots.selectAll('circle').data(visible,d=>d.code).join(
+  const visible=DATA.countries.filter(c=>Math.min(...c.timeline.map(t=>t.year))<=year);
+  gDots.selectAll('circle.hubdot').data(visible,d=>d.code).join(
     en=>en.append('circle').attr('class','hubdot').attr('r',0)
-        .attr('cx',d=>pt(d.hub_coords)[0]).attr('cy',d=>pt(d.hub_coords)[1])
-        .attr('fill','#eaf1f8').attr('stroke','#070b10').attr('stroke-width','1.4').attr('opacity',1)
-        .call(e=>e.transition().duration(400).attr('r',3.8)),
+      .attr('cx',d=>pt(d.hub_coords)[0]).attr('cy',d=>pt(d.hub_coords)[1])
+      .attr('fill','#0e0e0e').attr('stroke','#f4f4f1').attr('stroke-width','1.4')
+      .call(e=>e.transition().duration(380).attr('r',3.5)),
     up=>up, ex=>ex.remove()
   );
-  // смещения подписей для плотных кластеров, чтобы текст не перекрывался
-  const LBL = {GH:[7,13], NG:[-8,-7], RW:[9,-4], UG:[-9,-4], KE:[9,10], BW:[-9,11], ZA:[9,13], TZ:[9,3]};
   gLabels.selectAll('text.hublabel').data(visible,d=>d.code).join('text')
     .attr('class','hublabel')
-    .attr('x',d=>{const o=LBL[d.code]||[6,4]; return pt(d.hub_coords)[0]+o[0];})
-    .attr('y',d=>{const o=LBL[d.code]||[6,4]; return pt(d.hub_coords)[1]+o[1];})
-    .attr('text-anchor', d=> (LBL[d.code]&&LBL[d.code][0]<0) ? 'end':'start')
+    .attr('x',d=>{const o=LBL[d.code]||[6,4];return pt(d.hub_coords)[0]+o[0];})
+    .attr('y',d=>{const o=LBL[d.code]||[6,4];return pt(d.hub_coords)[1]+o[1];})
+    .attr('text-anchor',d=>(LBL[d.code]&&LBL[d.code][0]<0)?'end':'start')
     .text(d=>d.hub_city);
 
-  // маркеры абстрактных узлов графа — квадраты
   gDots.selectAll('path.absnode').data(ABSTRACT,d=>d.id).join('path')
     .attr('class','absnode')
     .attr('transform',d=>{const p=pt(d.coords);return `translate(${p[0]},${p[1]})`;})
-    .attr('d','M-5,-5 h10 v10 h-10 z')
-    .attr('fill','#6ea8fe').attr('stroke','#070b10').attr('stroke-width','1.2');
-
+    .attr('d','M-4,-4 h8 v8 h-8 z').attr('fill','#1a4fd6');
   gLabels.selectAll('text.abslabel').data(ABSTRACT,d=>d.id).join('text')
-    .attr('class','extlabel')
-    .attr('x',d=>pt(d.coords)[0]+11).attr('y',d=>pt(d.coords)[1]+4)
-    .attr('fill','#6ea8fe')
+    .attr('class','extlabel').attr('fill','#1a4fd6')
+    .attr('x',d=>pt(d.coords)[0]+9).attr('y',d=>pt(d.coords)[1]+3.5)
     .text(d=>d.ru);
 
-  // маркеры внешних узлов — ромб, чтобы отличать от африканских хабов
   gDots.selectAll('path.extnode').data(DATA.external_hubs,d=>d.id).join('path')
     .attr('class','extnode')
     .attr('transform',d=>{const p=pt(d.coords);return `translate(${p[0]},${p[1]})`;})
-    .attr('d','M0,-6 L6,0 L0,6 L-6,0 Z')
-    .attr('fill','#f0b429').attr('stroke','#070b10').attr('stroke-width','1.2');
-
+    .attr('d','M0,-5 L5,0 L0,5 L-5,0 Z').attr('fill','#1a4fd6');
   gLabels.selectAll('text.extlabel').data(DATA.external_hubs,d=>d.id).join('text')
     .attr('class','extlabel')
-    .attr('x',d=>pt(d.coords)[0]+10).attr('y',d=>pt(d.coords)[1]+4)
-    .attr('text-anchor', d=> (d.id==='EXT-HONGKONG'||d.id==='EXT-SINGAPORE') ? 'end' : 'start')
-    .attr('dx', d=> (d.id==='EXT-HONGKONG'||d.id==='EXT-SINGAPORE') ? -10 : 0)
-    .text(d=>d.ru)
-    .attr('dy', d=> d.id==='EXT-ADGM' ? 15 : 0);
+    .attr('x',d=>{const p=pt(d.coords); return p[0]>1050? p[0]-9 : p[0]+9;})
+    .attr('y',d=>pt(d.coords)[1]+3.5)
+    .attr('text-anchor',d=>pt(d.coords)[0]>1050?'end':'start')
+    .attr('dy',d=>d.id==='EXT-ADGM'?13:0)
+    .text(d=>d.ru);
 
-  gEdges.selectAll('g').style('opacity', d=> (netOn && d.year<=year) ? .8 : 0)
-                        .style('pointer-events', d=> (netOn && d.year<=year) ? 'auto':'none');
-
+  gEdges.selectAll('g').style('opacity',d=>(netOn&&d.year<=year)?1:0)
+                        .style('pointer-events',d=>(netOn&&d.year<=year)?'auto':'none');
   renderCases(year);
 }
 
@@ -566,91 +634,84 @@ function renderCases(year){
   const items=[];
   DATA.countries.forEach(c=>c.timeline.forEach(t=>{ if(t.year===year) items.push({c,t}); }));
   DATA.network_edges.forEach(e=>{ if(e.year===year) items.push({edge:e}); });
-  document.getElementById('casecount').textContent = items.length ? items.length+' записей' : 'нет записей';
-  if(!items.length){ list.innerHTML='<p style="font-size:13px;color:var(--muted)">В этом году в реестре нет закодированных событий.</p>'; return; }
-  list.innerHTML = items.map(it=>{
+  document.getElementById('ccount').textContent=items.length?items.length+' записей':'нет записей';
+  if(!items.length){ list.innerHTML='<div class="entry"><div class="txt">В этом году в реестре нет закодированных событий.</div></div>'; return; }
+  list.innerHTML=items.map(it=>{
     if(it.edge){
       const t=it.edge;
-      const col={registration:'#e05263',partnership:'#6ea8fe',funding:'#3ddc97',relocation:'#c4a0f5'}[t.type]||'#93a6b8';
+      const col={registration:'#a51c0a',partnership:'#1a4fd6',funding:'#1f7a3d',relocation:'#6b3fa0'}[t.type]||'#6e6e6e';
       const nm={registration:'Регистрация',partnership:'Партнёрство',funding:'Инвестиции',relocation:'Релокация'}[t.type]||t.type;
-      return `<div class="case"><div class="top"><span class="cn">Связь ${t.from} → ${t.to}</span><span class="yr">${t.year}</span></div>
-        <div class="rg" style="color:${col}">${nm}</div>
-        <div class="dt">${t.label}</div>${t.source?`<div class="src">${t.source}</div>`:''}</div>`;
+      return `<div class="entry"><div class="r1"><span class="nm">${t.from} → ${t.to}</span><span class="yr">${t.year}</span></div>
+        <div class="reg" style="color:${col}">${nm}</div>
+        <div class="txt">${t.label}</div>
+        <div class="foot"><span class="srcflag ${t.confidence}">${t.confidence}</span>${t.source?`<span>${t.source}</span>`:''}</div></div>`;
     }
     const {c,t}=it;
-    return `<div class="case" onclick="selectCountry('${c.code}')">
-      <div class="top"><span class="cn">${c.ru}</span><span class="yr">${t.year}</span></div>
-      <div class="rg" style="color:${REGIMES[t.regime].color}">${REGIMES[t.regime].label}</div>
-      <div class="dt">${t.note||'Режим закодирован обзорно, без детализации события.'}</div>
-      <div style="margin-top:8px"><span class="cf ${t.confidence}">${t.confidence}</span></div>
+    return `<div class="entry" onclick="selectCountry('${c.code}')">
+      <div class="r1"><span class="nm">${c.ru}</span><span class="yr">${t.year}</span></div>
+      <div class="reg" style="color:${REGIMES[t.regime].color}">${REGIMES[t.regime].label}</div>
+      <div class="txt">${t.note||'Режим закодирован обзорно, без детализации события.'}</div>
+      <div class="foot"><span class="srcflag ${t.confidence}">${t.confidence}</span></div>
     </div>`;
   }).join('');
 }
 
-window.selectCountry = function(code){
+window.selectCountry=function(code){
   const c=byCode[code]; if(!c) return;
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.pane==='country'));
   document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='pane-country'));
-  const y=+document.getElementById('bigyear').textContent;
+  const y=+document.getElementById('ybig').textContent;
   const r=regimeClass(c,y);
-  const links = DATA.network_edges.filter(e=>e.from===code||e.to===code);
-  const trail = c.timeline.map(t=>`<div class="trow">
-      <span class="ty">${t.year}</span>
-      <span class="tdot" style="background:${REGIMES[t.regime].color}"></span>
-      <span class="tl"><b style="color:${REGIMES[t.regime].color}">${REGIMES[t.regime].label}</b>${t.note?' — <span style="color:var(--muted)">'+t.note+'</span>':''}</span>
-    </div>`).join('');
-  const linkList = links.length? links.map(e=>`<div class="trow">
-      <span class="ty">${e.year}</span>
-      <span class="tdot" style="background:${e.type==='registration'?'#e05263':e.type==='partnership'?'#6ea8fe':e.type==='funding'?'#3ddc97':'#c4a0f5'}"></span>
-      <span class="tl">${e.from} → ${e.to}: ${e.label}</span></div>`).join('')
-    : '<div style="font-size:12.5px;color:var(--dim)">Связей в реестре нет — реестр рёбер неполон.</div>';
-  const met = c.metrics&&Object.keys(c.metrics).length
-    ? Object.entries(c.metrics).map(([k,v])=>`<div class="kv"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('') : '';
+  const links=DATA.network_edges.filter(e=>e.from===code||e.to===code);
+  const trail=c.timeline.map(t=>`<div class="tlrow">
+      <span class="y">${t.year}</span>
+      <span class="d" style="background:${REGIMES[t.regime].color}"></span>
+      <span class="t"><b>${REGIMES[t.regime].label}</b>${t.note?' — '+t.note:''}</span></div>`).join('');
+  const lk=links.length?links.map(e=>`<div class="tlrow">
+      <span class="y">${e.year}</span>
+      <span class="d" style="background:${e.type==='registration'?'#a51c0a':e.type==='partnership'?'#1a4fd6':e.type==='funding'?'#1f7a3d':'#6b3fa0'}"></span>
+      <span class="t">${e.from} → ${e.to}: ${e.label}</span></div>`).join('')
+    :'<div style="font-size:12.5px;color:var(--ink-3);padding:8px 0">Связей в реестре нет — реестр рёбер неполон.</div>';
+  const met=c.metrics&&Object.keys(c.metrics).length
+    ? Object.entries(c.metrics).map(([k,v])=>`<div class="cprow"><span class="k">${k}</span><span class="mono">${v}</span></div>`).join(''):'';
   document.getElementById('countryPane').innerHTML=`
-    <h3 class="cp-h">${c.ru} <span style="color:var(--dim);font-size:12.5px;font-weight:400">${c.name}</span></h3>
-    <div class="cp-s">хаб: ${c.hub_city} · роль: ${ROLE_EN[c.role]||c.role}</div>
-    <div class="kv"><span class="k">Режим в ${y}</span><span class="v" style="color:${r.color}">${r.label}</span></div>
-    ${r.note?`<div class="cp-note">${r.note}</div>`:''}
-    ${met}
-    <div class="trail"><div class="trail-lbl">Траектория режима</div>${trail}</div>
-    <div class="trail"><div class="trail-lbl">Связи с другими узлами</div>${linkList}</div>`;
-  document.querySelector('#pane-country .pane-scroll')?.scrollTo(0,0);
+    <div class="cp">
+      <h3>${c.ru}</h3>
+      <div class="meta">${c.name} · хаб: ${c.hub_city}<br>роль: ${c.role}</div>
+      <div class="cprow"><span class="k">Режим в ${y}</span><span class="mono" style="color:${r.color}">${r.label}</span></div>
+      ${r.note?`<div class="cpnote">${r.note}</div>`:''}
+      ${met}
+      <div class="tl"><div class="tl-h">Траектория режима</div>${trail}</div>
+      <div class="tl"><div class="tl-h">Связи с другими узлами</div>${lk}</div>
+    </div>`;
+  document.querySelector('#pane-country .pscroll')?.scrollTo(0,0);
 };
 
 function renderNetPane(){
   const types={registration:'Регистрация',partnership:'Партнёрство',funding:'Инвестиции',relocation:'Релокация'};
-  const col={registration:'#e05263',partnership:'#6ea8fe',funding:'#3ddc97',relocation:'#c4a0f5'};
-  document.getElementById('netPane').innerHTML = [...DATA.network_edges].sort((a,b)=>a.year-b.year)
-    .map(e=>`<div class="case"><div class="top"><span class="cn">${e.from} → ${e.to}</span><span class="yr">${e.year}</span></div>
-      <div class="rg" style="color:${col[e.type]}">${types[e.type]||e.type}</div>
-      <div class="dt">${e.label}</div>
-      <div class="src">${e.source||''} · ${e.confidence}</div></div>`).join('')
-    + '<div class="note" style="margin-top:14px;font-size:12.5px">Реестр связей неполон: собрано 10 рёбер. Для полноценного сетевого анализа нужно ~60–100 — это следующий этап.</div>';
+  const col={registration:'#a51c0a',partnership:'#1a4fd6',funding:'#1f7a3d',relocation:'#6b3fa0'};
+  document.getElementById('netPane').innerHTML=[...DATA.network_edges].sort((a,b)=>a.year-b.year)
+    .map(e=>`<div class="entry"><div class="r1"><span class="nm">${e.from} → ${e.to}</span><span class="yr">${e.year}</span></div>
+      <div class="reg" style="color:${col[e.type]}">${types[e.type]||e.type}</div>
+      <div class="txt">${e.label}</div>
+      <div class="foot"><span class="srcflag ${e.confidence}">${e.confidence}</span><span>${e.source||''}</span></div></div>`).join('')
+    +'<div class="entry"><div class="txt" style="color:var(--ink-3)">Реестр связей неполон: собрано 10 рёбер. Для полноценного сетевого анализа необходимо ~60–100 — это следующий этап работы.</div></div>';
 }
 
 function renderRoles(){
   const groups={};
   DATA.countries.forEach(c=>{ (groups[c.role] ||= []).push(c); });
-  const roleColor=r=>{
-    if(/оболочка/.test(r)) return '#e05263';
-    if(/посредник/.test(r)) return '#3ddc97';
-    if(/метрополия/.test(r)) return '#6ea8fe';
-    if(/источник/.test(r)) return '#f0b429';
-    if(/запрет/.test(r)) return '#c4a0f5';
-    return '#93a6b8';
-  };
-  document.getElementById('roleGrid').innerHTML = Object.entries(groups).map(([role,list])=>`
-    <div class="rolecard">
-      <div class="rk" style="color:${roleColor(role)}">${list.length===1?'страна':'страны'}</div>
-      <h5>${ROLE_EN[role]||role}</h5>
-      <div class="desc">${list.length} в реестре</div>
-      <div class="chips">${list.map(c=>`<span class="chip" onclick="selectCountry('${c.code}')">${c.ru}</span>`).join('')}</div>
+  document.getElementById('roleGrid').innerHTML=Object.entries(groups).map(([role,list])=>`
+    <div class="role">
+      <h4>${role}</h4>
+      <div class="cnt">${list.length} ${list.length===1?'государство':'государств'}</div>
+      <div class="countries">${list.map(c=>`<span class="cchip" onclick="selectCountry('${c.code}')">${c.ru}</span>`).join('')}</div>
     </div>`).join('');
-  document.getElementById('extGrid').innerHTML = DATA.external_hubs.map(h=>`
-    <div class="rolecard">
-      <div class="rk" style="color:var(--gold)">${h.role_type}</div>
-      <h5>${h.ru}</h5>
-      <div class="desc">${h.role}</div>
+  document.getElementById('extGrid').innerHTML=DATA.external_hubs.map(h=>`
+    <div class="role">
+      <h4>${h.ru}</h4>
+      <div class="cnt">${h.role_type}</div>
+      <div style="font-size:12.5px;color:var(--ink-2);margin-top:11px;line-height:1.5">${h.role}</div>
     </div>`).join('');
 }
 
@@ -659,40 +720,40 @@ function renderWave(){
   YEARS.forEach(y=>counts[y]={prohibitive:0,restrictive:0,drafting:0,sandbox:0,licensing:0,open:0});
   DATA.countries.forEach(c=>YEARS.forEach(y=>{ const r=regimeClass(c,y); if(r.key!=='none') counts[y][r.key]++; }));
   const keys=['prohibitive','restrictive','drafting','sandbox','licensing','open'];
-  const w=1200,h=340,pad={l:46,r:180,t:24,b:44};
+  const w=1200,h=380,pad={l:54,r:215,t:28,b:54},maxV=14;
   const bw=(w-pad.l-pad.r)/YEARS.length;
   let bars='',xlab='';
   YEARS.forEach((y,i)=>{
     let acc=0;
     keys.forEach(k=>{
       const v=counts[y][k]; if(!v) return;
-      const bh=(h-pad.t-pad.b)*(v/14);
-      const y0=h-pad.b-acc-bh;
-      bars+=`<rect x="${pad.l+i*bw+2}" y="${y0}" width="${bw-4}" height="${bh}" fill="${REGIMES[k].color}" rx="2"><title>${y} · ${REGIMES[k].label}: ${v} стран</title></rect>`;
+      const bh=(h-pad.t-pad.b)*(v/maxV);
+      bars+=`<rect x="${pad.l+i*bw+1.5}" y="${h-pad.b-acc-bh}" width="${bw-3}" height="${bh}" fill="${REGIMES[k].color}"><title>${y}: ${REGIMES[k].label} — ${v}</title></rect>`;
       acc+=bh;
     });
-    xlab+=`<text x="${pad.l+i*bw+bw/2}" y="${h-16}" text-anchor="middle" font-size="11" fill="#6b8095" font-family="ui-monospace,monospace">${y}</text>`;
+    xlab+=`<text x="${pad.l+i*bw+bw/2}" y="${h-24}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#6e6e6e">${y}</text>`;
   });
   const grid=[0,4,8,12].map(v=>{
-    const yy=h-pad.b-(h-pad.t-pad.b)*(v/14);
-    return `<line x1="${pad.l}" x2="${w-pad.r}" y1="${yy}" y2="${yy}" stroke="#1f2a35"/><text x="${pad.l-8}" y="${yy+4}" text-anchor="end" font-size="11" fill="#6b8095" font-family="ui-monospace,monospace">${v}</text>`;
+    const yy=h-pad.b-(h-pad.t-pad.b)*(v/maxV);
+    return `<line x1="${pad.l}" x2="${w-pad.r}" y1="${yy}" y2="${yy}" stroke="#d4d4cf"/>
+            <text x="${pad.l-10}" y="${yy+4}" text-anchor="end" font-family="ui-monospace,monospace" font-size="10.5" fill="#6e6e6e">${v}</text>`;
   }).join('');
-  const leg = keys.map((k,i)=>{
-    const yy=pad.t+i*27;
-    return `<rect x="${w-pad.r+20}" y="${yy}" width="13" height="13" fill="${REGIMES[k].color}" rx="3"/>
-            <text x="${w-pad.r+40}" y="${yy+11}" font-size="12" fill="#93a6b8">${REGIMES[k].label}</text>`;
+  const leg=keys.map((k,i)=>{
+    const yy=pad.t+i*25;
+    return `<rect x="${w-pad.r+22}" y="${yy}" width="12" height="12" fill="${REGIMES[k].color}"/>
+            <text x="${w-pad.r+42}" y="${yy+10}" font-size="12" fill="#3a3a3a">${REGIMES[k].label}</text>`;
   }).join('');
-  document.getElementById('wave').innerHTML = `${grid}${bars}${xlab}${leg}
-    <text x="${pad.l}" y="15" font-size="11" fill="#6b8095" font-family="ui-monospace,monospace">ЧИСЛО СТРАН В РЕЖИМЕ · 2013–2026</text>`;
+  document.getElementById('wave').innerHTML=`${grid}${bars}${xlab}${leg}
+    <text x="${pad.l}" y="16" font-family="ui-monospace,monospace" font-size="10.5" letter-spacing="1.2" fill="#6e6e6e">ГОСУДАРСТВ В РЕЖИМЕ · 2013–2026</text>`;
 }
 
 const slider=document.getElementById('slider');
 slider.addEventListener('input',e=>paint(+e.target.value));
 document.querySelectorAll('[data-y]').forEach(b=>b.addEventListener('click',()=>paint(+b.dataset.y)));
 document.getElementById('netBtn').addEventListener('click',function(){
-  netOn=!netOn; this.classList.toggle('on',netOn); this.textContent = netOn?'Связи':'Связи выкл';
-  const y=+document.getElementById('bigyear').textContent;
-  gEdges.selectAll('g').style('opacity',d=>(netOn&&d.year<=y)?.8:0).style('pointer-events',d=>(netOn&&d.year<=y)?'auto':'none');
+  netOn=!netOn; this.classList.toggle('on',netOn); this.textContent=netOn?'Граф':'Граф выкл';
+  const y=+document.getElementById('ybig').textContent;
+  gEdges.selectAll('g').style('opacity',d=>(netOn&&d.year<=y)?1:0).style('pointer-events',d=>(netOn&&d.year<=y)?'auto':'none');
 });
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));
@@ -702,13 +763,18 @@ document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',
 }));
 let playing=false;
 document.getElementById('playBtn').addEventListener('click',function(){
-  if(playing) return; playing=true; this.textContent='■ остановить';
+  if(playing) return; playing=true; this.textContent='Стоп';
   let y=2013;
-  const iv=setInterval(()=>{ paint(y); y++; if(y>2026){ clearInterval(iv); playing=false; this.textContent='▶ Проиграть'; } },700);
+  const iv=setInterval(()=>{ paint(y); y++; if(y>2026){clearInterval(iv);playing=false;this.textContent='Проиграть';} },700);
 });
 
-const conf = DATA.countries.flatMap(c=>c.timeline).reduce((a,t)=>{a[t.confidence]=(a[t.confidence]||0)+1;return a;},{});
-document.getElementById('confCounts').textContent = Object.entries(conf).map(([k,v])=>k+': '+v).join('  ·  ');
+const conf=DATA.countries.flatMap(c=>c.timeline).reduce((a,t)=>{a[t.confidence]=(a[t.confidence]||0)+1;return a;},{});
+document.getElementById('confCounts').textContent=Object.entries(conf).map(([k,v])=>k+' '+v).join(' · ');
+document.getElementById('s-countries').textContent=DATA.countries.length;
+document.getElementById('s-records').textContent=DATA.countries.reduce((a,c)=>a+c.timeline.length,0);
+document.getElementById('s-nodes').textContent=DATA.external_hubs.length;
+document.getElementById('s-edges').textContent=DATA.network_edges.length;
+document.getElementById('s-sourced').textContent=conf.sourced||0;
 renderRoles(); renderWave(); renderNetPane();
 </script>
 </body>
